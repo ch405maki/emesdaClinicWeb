@@ -1,0 +1,180 @@
+<template>
+    <div>
+      <Head title="Appointment Details" />
+  
+      <AuthenticatedLayout>
+        <template #header>
+          <div class="flex justify-between items-center h-6">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Appointment Details</h2>
+            <!-- Button to make a diagnostic -->
+            <button @click="redirectToDiagnosticForm" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+              Make Diagnostic
+            </button>
+          </div>
+        </template>
+  
+        <div class="py-6 px-6">
+          <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <!-- Appointment Information Card -->
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+              <div class="px-4 py-5 sm:px-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Appointment Information</h3>
+              </div>
+              <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+                <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3">
+                  <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">Status</dt>
+                    <dd class="mt-1 text-sm">
+                      <span :class="statusClass(appointment.status)">
+                        {{ appointment.status }}
+                      </span>
+                    </dd>
+                  </div>
+                  <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">Appointment Date</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ formattedDate(appointment.appointment_date) }}</dd>
+                  </div>
+                  <!-- Additional Fields -->
+                  <div class="sm:col-span-1" v-for="(value, key) in additionalFields(appointment)" :key="key">
+                    <dt class="text-sm font-medium text-gray-500">{{ key }}</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ value }}</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+  
+            <!-- Student Information Card -->
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+              <div class="px-4 py-5 sm:px-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Student Information</h3>
+              </div>
+              <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+                <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3">
+                  <div class="sm:col-span-1" v-for="(value, key) in studentFields(appointment.student)" :key="key">
+                    <dt class="text-sm font-medium text-gray-500">{{ key }}</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ value }}</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+  
+            <!-- Dentist Information Card -->
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+              <div class="px-4 py-5 sm:px-6">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Dentist Information</h3>
+              </div>
+              <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+                <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+                  <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">Name</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ appointment.dentist.name }}</dd>
+                  </div>
+                  <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">Email</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ appointment.dentist.email }}</dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+      </AuthenticatedLayout>
+    </div>
+  </template>
+  
+  <script setup>
+  import { defineProps } from 'vue';
+  import { Head, router } from '@inertiajs/vue3';
+  import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+  
+  // Define props
+  const props = defineProps({
+    appointment: {
+      type: Object,
+      required: true
+    }
+  });
+  
+  // Format date function
+  function formattedDate(dateString) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  }
+  
+  // Function to handle button click and redirect to Diagnostic Form
+  function redirectToDiagnosticForm() {
+    router.get(`/diagnostic/form`, { id: props.appointment.id });
+  }
+  
+  // Method to generate additional fields for appointment
+  function additionalFields(appointment) {
+    return {
+      "Last Dentist": appointment.last_dentist || 'N/A',
+      "Occlusion": appointment.occlusion || 'N/A',
+      "Dental Anomalies": appointment.dent_anomaly || 'N/A',
+      "General Health Status": appointment.good_health ? 'Good' : 'Poor',
+      "Currently Under Medical Treatment": appointment.medical_treatment ? 'Yes' : 'No',
+      "Surgical Operation History": appointment.surgical_operation ? 'Yes' : 'No',
+      "Hospitalized Before": appointment.hospitalized ? 'Yes' : 'No',
+      "Current Medications": appointment.medication || 'None',
+      "Uses Tobacco": appointment.tobacco ? 'Yes' : 'No',
+      "Consumes Alcohol": appointment.alcohol ? 'Yes' : 'No',
+      "Allergies": appointment.allergy || 'None',
+      "Pregnant": appointment.pregnant !== null ? (appointment.pregnant ? 'Yes' : 'No') : 'N/A',
+      "Other Information": appointment.other || 'None'
+    };
+  }
+  
+  // Method to generate fields for student information
+  function studentFields(student) {
+    return {
+      "Name": student.name,
+      "Email": student.email,
+      "Role": student.role,
+      "Age": student.age,
+      "Sex": student.sex,
+      "Civil Status": student.civil_status,
+      "Course/Year": student.course_year,
+      "Contact": student.contact,
+      "Position": student.position,
+      "Address": student.address,
+      "In Case of Emergency - Name": student.ioe_name,
+      "In Case of Emergency - Relation": student.ioe_relation,
+      "In Case of Emergency - Address": student.ioe_address,
+      "In Case of Emergency - Contact": student.ioe_contact
+    };
+  }
+  
+  // Function to determine status background color class
+  function statusClass(status) {
+    switch (status) {
+      case 'pending':
+        return 'bg-yellow-200 text-yellow-800';
+      case 'confirmed':
+        return 'bg-green-200 text-green-800';
+      case 'completed':
+        return 'bg-blue-200 text-blue-800';
+      case 'canceled':
+        return 'bg-red-200 text-red-800';
+      default:
+        return 'bg-gray-200 text-gray-800';
+    }
+  }
+  </script>
+  
+  <style scoped>
+  /* Additional custom styles if needed */
+  .bg-yellow-200 {
+    background-color: #FEF3C7;
+  }
+  .bg-green-200 {
+    background-color: #D1FAE5;
+  }
+  .bg-blue-200 {
+    background-color: #BFDBFE;
+  }
+  .bg-red-200 {
+    background-color: #FEE2E2;
+  }
+  </style>
+  
