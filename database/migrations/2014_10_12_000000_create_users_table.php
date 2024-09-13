@@ -18,25 +18,23 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            // Additional fields
+        
             $table->integer('age')->nullable();
             $table->string('sex')->nullable();
             $table->string('civil_status')->nullable();
-            $table->string('course_year')->nullable();
             $table->string('contact')->nullable();
-            $table->string('position')->nullable();
             $table->string('address')->nullable();
-            $table->string('ioe_name')->nullable();
-            $table->string('ioe_relation')->nullable();
-            $table->string('ioe_address')->nullable();
-            $table->string('ioe_contact')->nullable();
-
+            $table->string('occupation')->nullable();
+            $table->string('officeAddress')->nullable();
+            $table->string('telNumber')->nullable();
+        
             $table->string('password');
-            $table->string('role')->default('student');
-
+            $table->string('role')->default('patient');
+        
             $table->rememberToken();
             $table->timestamps();
         });
+        
     }
 
     /**

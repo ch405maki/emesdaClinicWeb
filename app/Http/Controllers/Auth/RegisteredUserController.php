@@ -34,22 +34,19 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'email' => 'required|string|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => 'required|string', // Add validation for the 'role' field
-            'age' => 'required|numeric', // Add validation for the 'age' field
-            'sex' => 'required|string', // Add validation for the 'sex' field
-            'civil_status' => 'required|string', // Add validation for the 'civil_status' field
-            'course_year' => 'required|string', // Add validation for the 'course_year' field
-            'contact' => 'required|string', // Add validation for the 'contact' field
-            'position' => 'string|nullable', // Add validation for the 'position' field
-            'address' => 'required|string', // Add validation for the 'ioe_address' field
-            'ioe_name' => 'required|string', // Add validation for the 'ioe_name' field
-            'ioe_relation' => 'required|string', // Add validation for the 'ioe_relation' field
-            'ioe_address' => 'required|string', // Add validation for the 'ioe_address' field
-            'ioe_contact' => 'required|string', // Add validation for the 'ioe_contact' field
+            'role' => 'required|string',
+            'age' => 'required|numeric',
+            'sex' => 'required|string',
+            'civil_status' => 'required|string',
+            'contact' => 'required|string',
+            'address' => 'required|string',
+            'occupation' => 'nullable|string',
+            'officeAddress' => 'nullable|string',
+            'telNumber' => 'nullable|string',
         ]);
-    
+        
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -58,14 +55,11 @@ class RegisteredUserController extends Controller
             'age' => $request->age,
             'sex' => $request->sex,
             'civil_status' => $request->civil_status,
-            'course_year' => $request->course_year,
             'contact' => $request->contact,
-            'position' => $request->position,
             'address' => $request->address,
-            'ioe_name' => $request->ioe_name,
-            'ioe_relation' => $request->ioe_relation,
-            'ioe_address' => $request->ioe_address,
-            'ioe_contact' => $request->ioe_contact,
+            'occupation' => $request->occupation,
+            'officeAddress' => $request->officeAddress,
+            'telNumber' => $request->telNumber,
         ]);
     
         event(new Registered($user));

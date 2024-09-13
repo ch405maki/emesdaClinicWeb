@@ -11,11 +11,11 @@
         <div class="mx-auto sm:px-6 lg:px-8 ">
           <!-- Hidden fields for IDs and status -->
           <div class="mb-4 hidden">
-            <label for="student_id" class="block text-sm font-medium text-gray-700">Student ID</label>
+            <label for="patient_id" class="block text-sm font-medium text-gray-700">Patient ID</label>
             <input
               type="text"
-              id="student_id"
-              v-model="form.student_id"
+              id="patient_id"
+              v-model="form.patient_id"
               readonly
               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100"
             />
@@ -294,7 +294,7 @@ const page = usePage();
 const userId = page.props.userId;
 
 const form = ref({
-  student_id: userId,
+  patient_id: userId,
   dentist_id: '2',
   appointment_date: '',
   status: 'pending',
@@ -354,7 +354,7 @@ const handleSubmit = async () => {
 
     // Reset the form after successful submission
     form.value = {
-      student_id: userId,
+      patient_id: userId,
       dentist_id: '2',
       appointment_date: '',
       status: 'pending',

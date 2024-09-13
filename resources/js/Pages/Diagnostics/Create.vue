@@ -17,7 +17,7 @@
               <h3 class="text-lg font-medium leading-6 text-gray-900 mb-2">Appointment Details</h3>
               <div class="space-y-1 text-sm text-gray-700">
                 <p><strong>Date:</strong> {{ formattedDate(props.appointment.appointment_date) }}</p>
-                <p><strong>Student:</strong> {{ props.appointment.student.name }}</p>
+                <p><strong>patient:</strong> {{ props.appointment.patient.name }}</p>
                 <p><strong>Dentist:</strong> {{ props.appointment.dentist.name }}</p>
                 <p><strong>Status:</strong> {{ props.appointment.status }}</p>
               </div>

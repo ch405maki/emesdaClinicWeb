@@ -20,7 +20,7 @@ class DiagnosticController extends Controller
         $appointmentId = $request->query('id');
 
         // Fetch the appointment details if needed (for display purposes)
-        $appointment = Appointment::with('student', 'dentist')->find($appointmentId);
+        $appointment = Appointment::with('patient', 'dentist')->find($appointmentId);
 
         if (!$appointment) {
             return redirect()->route('appointments.index')->withErrors('Appointment not found');

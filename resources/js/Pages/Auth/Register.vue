@@ -78,6 +78,15 @@
                 </div>
 
                 <!-- Additional Fields -->
+                <!-- Next Button -->
+                <div class="flex items-center justify-end mt-4">
+                    <PrimaryButton @click="nextStep" class="ms-4">
+                        Next
+                    </PrimaryButton>
+                </div>
+            </div>
+
+            <div v-if="step === 2" class="mb-8">
                 <!-- Age -->
                 <div class="mt-4">
                     <InputLabel for="age" value="Age" />
@@ -116,22 +125,9 @@
                     <InputError class="mt-2" :message="form.errors.civil_status" />
                 </div>
 
-                <!-- Course Year -->
-                <div class="mt-4">
-                    <InputLabel for="course_year" value="Course/Year" />
-                    <TextInput
-                        id="course_year"
-                        type="text"
-                        class="mt-1 block w-full"
-                        v-model="form.course_year"
-                        required
-                    />
-                    <InputError class="mt-2" :message="form.errors.course_year" />
-                </div>
-
                 <!-- Contact -->
                 <div class="mt-4">
-                    <InputLabel for="contact" value="Contact" />
+                    <InputLabel for="contact" value="Number" />
                     <TextInput
                         id="contact"
                         type="text"
@@ -140,18 +136,6 @@
                         required
                     />
                     <InputError class="mt-2" :message="form.errors.contact" />
-                </div>
-
-                <!-- Position -->
-                <div class="mt-4">
-                    <InputLabel for="position" value="Position" />
-                    <TextInput
-                        id="position"
-                        type="text"
-                        class="mt-1 block w-full"
-                        v-model="form.position"
-                    />
-                    <InputError class="mt-2" :message="form.errors.position" />
                 </div>
 
                 <!-- Address -->
@@ -166,62 +150,42 @@
                     <InputError class="mt-2" :message="form.errors.address" />
                 </div>
 
-                <!-- Next Button -->
-                <div class="flex items-center justify-end mt-4">
-                    <PrimaryButton @click="nextStep" class="ms-4">
-                        Next
-                    </PrimaryButton>
-                </div>
-            </div>
-
-            <div v-if="step === 2">
-                <!-- In Case of Emergency Fields -->
                 <div class="mt-4">
-                    <InputLabel for="ioe_name" value="In Case of Emergency: Name" />
+                    <InputLabel for="occupation" value="Occupation" />
                     <TextInput
-                        id="ioe_name"
+                        id="occupation"
                         type="text"
                         class="mt-1 block w-full"
-                        v-model="form.ioe_name"
+                        v-model="form.occupation"
                         required
                     />
-                    <InputError class="mt-2" :message="form.errors.ioe_name" />
+                    <InputError class="mt-2" :message="form.errors.occupation" />
                 </div>
 
+                <div class="border-[1px]"></div>
+
                 <div class="mt-4">
-                    <InputLabel for="ioe_relation" value="In Case of Emergency: Relation" />
+                    <InputLabel for="officeAddress" value="Office Address" />
                     <TextInput
-                        id="ioe_relation"
+                        id="officeAddress"
                         type="text"
                         class="mt-1 block w-full"
-                        v-model="form.ioe_relation"
+                        v-model="form.officeAddress"
                         required
                     />
-                    <InputError class="mt-2" :message="form.errors.ioe_relation" />
+                    <InputError class="mt-2" :message="form.errors.officeAddress" />
                 </div>
 
                 <div class="mt-4">
-                    <InputLabel for="ioe_address" value="In Case of Emergency: Address" />
+                    <InputLabel for="telNumber" value="Tel. Number" />
                     <TextInput
-                        id="ioe_address"
+                        id="telNumber"
                         type="text"
                         class="mt-1 block w-full"
-                        v-model="form.ioe_address"
+                        v-model="form.telNumber"
                         required
                     />
-                    <InputError class="mt-2" :message="form.errors.ioe_address" />
-                </div>
-
-                <div class="mt-4">
-                    <InputLabel for="ioe_contact" value="In Case of Emergency: Contact" />
-                    <TextInput
-                        id="ioe_contact"
-                        type="text"
-                        class="mt-1 block w-full"
-                        v-model="form.ioe_contact"
-                        required
-                    />
-                    <InputError class="mt-2" :message="form.errors.ioe_contact" />
+                    <InputError class="mt-2" :message="form.errors.telNumber" />
                 </div>
 
                 <!-- Back and Register Buttons -->
@@ -264,18 +228,15 @@ const form = useForm({
     email: '',
     password: '',
     password_confirmation: '',
-    role: 'student',
-    age: '',           // New field
-    sex: '',           // New field
-    civil_status: '',  // New field
-    course_year: '',   // New field
-    contact: '',       // New field
-    position: '',      // New field
-    address: '',       // New field
-    ioe_name: '',      // New field (In case of emergency)
-    ioe_relation: '',  // New field (In case of emergency)
-    ioe_address: '',   // New field (In case of emergency)
-    ioe_contact: ''    // New field (In case of emergency)
+    role: 'patient',
+    age: '',        
+    sex: '',        
+    civil_status: '', 
+    contact: '',        
+    address: '',
+    occupation: '',
+    officeAddress: '',
+    telNumber: '',
 });
 
 const nextStep = () => {
@@ -295,14 +256,11 @@ const submit = () => {
             'age',
             'sex',
             'civil_status',
-            'course_year',
             'contact',
-            'position',
             'address',
-            'ioe_name',
-            'ioe_relation',
-            'ioe_address',
-            'ioe_contact'
+            'occupation',
+            'officeAddress',
+            'telNumber'
         ),
     });
 };

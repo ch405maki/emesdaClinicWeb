@@ -10,16 +10,16 @@ class Appointment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'student_id', 'dentist_id', 'appointment_date', 'status', 'last_dentist', 'occlusion', 'dent_anomaly', 'good_health', 'medical_treatment', 'surgical_operation', 'hospitalized', 'medication', 'tobacco', 'alcohol', 'allergy', 'pregnant', 'other',
+        'patient_id', 'dentist_id', 'appointment_date', 'status', 'last_dentist', 'occlusion', 'dent_anomaly', 'good_health', 'medical_treatment', 'surgical_operation', 'hospitalized', 'medication', 'tobacco', 'alcohol', 'allergy', 'pregnant', 'other',
     ];
 
     protected $casts = [
         'appointment_date' => 'datetime',
     ];
 
-    public function student()
+    public function patient()
     {
-        return $this->belongsTo(User::class, 'student_id');
+        return $this->belongsTo(User::class, 'patient_id');
     }
 
     public function dentist()
@@ -39,11 +39,12 @@ class Appointment extends Model
 
     public static function getAppointmentsWithDiagnostics()
     {
-        return self::with(['diagnostic', 'student', 'dentist'])->get();
+        return self::with(['diagnostic', 'patient', 'dentist'])->get();
     }
 
     public function scopeStatus($query, $status)
     {
         return $query->where('status', $status);
     }
+
 }

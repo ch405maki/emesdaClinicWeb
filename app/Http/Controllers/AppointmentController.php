@@ -20,7 +20,7 @@ class AppointmentController extends Controller
     public function show($id)
     {
         // Fetch the appointment by ID and include related diagnostic and user data
-        $appointment = Appointment::with(['student', 'dentist', 'diagnostic'])
+        $appointment = Appointment::with(['patient', 'dentist', 'diagnostic'])
             ->findOrFail($id);
 
         // Render the view with the appointment data
@@ -53,7 +53,7 @@ class AppointmentController extends Controller
 
         // Validate the request data
         $validated = $request->validate([
-            'student_id' => 'required|integer',
+            'patient_id' => 'required|integer',
             'dentist_id' => 'required|integer',
             'appointment_date' => 'required|date',
             'status' => 'required|in:pending,confirmed,completed,canceled',

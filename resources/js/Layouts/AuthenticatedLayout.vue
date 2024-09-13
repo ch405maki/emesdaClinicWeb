@@ -132,6 +132,11 @@
             </nav>
           </div>
           <main class="lg:col-span-9 xl:col-span-10">
+            <header :class="headerClass" v-if="$slots.header">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 rounded-lg bg-purple-900">
+            <slot name="header" />
+            </div>
+            </header>
             <div>
               <slot />
             </div>

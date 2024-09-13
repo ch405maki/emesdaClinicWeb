@@ -22,10 +22,10 @@ class ReportController extends Controller
         if ($user->role == 'dentist') {
             // Fetch all appointments for dentists
             $appointments = Appointment::getAppointmentsWithDiagnostics();
-        } elseif ($user->role == 'student') {
-            // Fetch only appointments made by the student
-            $appointments = $query->where('student_id', $user->id)
-                                ->with(['student', 'dentist', 'diagnostic'])
+        } elseif ($user->role == 'patient') {
+            // Fetch only appointments made by the patient
+            $appointments = $query->where('patient_id', $user->id)
+                                ->with(['patient', 'dentist', 'diagnostic'])
                                 ->get();
         }
 
@@ -38,8 +38,8 @@ class ReportController extends Controller
 
     public function show($id)
     {
-        // Fetch the appointment by ID and include related student, dentist, and diagnostic data
-        $appointment = Appointment::with(['student', 'dentist', 'diagnostic'])->findOrFail($id);
+        // Fetch the appointment by ID and include related patient, dentist, and diagnostic data
+        $appointment = Appointment::with(['patient', 'dentist', 'diagnostic'])->findOrFail($id);
 
         // Fetch the latest diagnostic for the appointment
         $latestDiagnostic = Diagnostic::where('appointment_id', $id)

@@ -7,7 +7,7 @@
     <template #header>
       <div class="flex justify-between items-center">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">Individual Dental Health Record</h2>
-        <button v-if="userRole !== 'student'" @click="exportPdf" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded flex items-center space-x-2">
+        <button v-if="userRole !== 'patient'" @click="exportPdf" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded flex items-center space-x-2">
           <span class="material-icons">picture_as_pdf</span>
           <span>Export PDF</span>
         </button>
@@ -201,14 +201,14 @@
       </div>
         <!-- Odonto-stomatological Record -->
 
-        <!-- Student Information Card -->
+        <!-- patient Information Card -->
         <div class="bg-white shadow overflow-hidden rounded-lg sm:rounded-lg">
           <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900">Student Information</h3>
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Patient Information</h3>
           </div>
           <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
             <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3">
-              <div class="sm:col-span-1" v-for="(value, key) in studentFields(appointment.student)" :key="key">
+              <div class="sm:col-span-1" v-for="(value, key) in patientFields(appointment.patient)" :key="key">
                 <dt class="text-sm font-medium text-gray-500">{{ key }}</dt>
                 <dd class="mt-1 text-sm text-gray-900">{{ value }}</dd>
               </div>
@@ -292,14 +292,14 @@
                       </div>
                   </div>
 
-                  <!-- Student Information -->
+                  <!-- patient Information -->
                   <div class="bg-white shadow overflow-hidden rounded-lg sm:rounded-lg">
                       <div class="px-4 py-5 sm:px-6">
-                          <h3 class="text-lg leading-6 font-medium text-gray-900">Student Information</h3>
+                          <h3 class="text-lg leading-6 font-medium text-gray-900">Patient Information</h3>
                       </div>
                       <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
                           <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3">
-                              <div class="sm:col-span-1" v-for="(value, key) in studentFields(appointment.student)" :key="key">
+                              <div class="sm:col-span-1" v-for="(value, key) in patientFields(appointment.patient)" :key="key">
                                   <dt class="text-sm font-medium text-gray-500">{{ key }}</dt>
                                   <dd class="mt-1 text-sm text-gray-900">{{ value }}</dd>
                               </div>
@@ -416,23 +416,17 @@ function additionalFields(appointment) {
   };
 }
 
-// Student fields
-function studentFields(student) {
+// patient fields
+function patientFields(patient) {
   return {
-    "Name": student.name,
-    "Email": student.email,
-    "Role": student.role,
-    "Age": student.age,
-    "Sex": student.sex,
-    "Civil Status": student.civil_status,
-    "Course/Year": student.course_year,
-    "Contact": student.contact,
-    "Position": student.position,
-    "Address": student.address,
-    "In Case of Emergency - Name": student.ioe_name,
-    "In Case of Emergency - Relation": student.ioe_relation,
-    "In Case of Emergency - Address": student.ioe_address,
-    "In Case of Emergency - Contact": student.ioe_contact
+    "Name": patient.name,
+    "Email": patient.email,
+    "Role": patient.role,
+    "Age": patient.age,
+    "Sex": patient.sex,
+    "Civil Status": patient.civil_status,
+    "Contact": patient.contact,
+    "Address": patient.address,
   };
 }
 

@@ -122,7 +122,7 @@
     return appointments.value.filter((appointment) => {
       return (
         appointment.diagnostic?.description.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-        appointment.student?.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+        appointment.patient?.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
         appointment.dentist?.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
         formatDate(appointment.appointment_date).toLowerCase().includes(searchQuery.value.toLowerCase())
       );

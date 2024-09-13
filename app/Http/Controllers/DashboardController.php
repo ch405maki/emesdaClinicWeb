@@ -17,16 +17,13 @@ class DashboardController extends Controller
         // Initialize the appointments query
         $query = Appointment::where('appointment_date', '>=', now()->startOfDay());
 
-        // Check the user's role and adjust the query accordingly
         if ($user->role == 'dentist') {
-            // Fetch all appointments for dentists
             $appointments = $query->where('dentist_id', $user->id)
-                                  ->with(['student', 'diagnostic'])
+                                  ->with(['patient', 'diagnostic'])
                                   ->orderBy('appointment_date', 'asc')
                                   ->get();
-        } elseif ($user->role == 'student') {
-            // Fetch only appointments made by the student
-            $appointments = $query->where('student_id', $user->id)
+        } elseif ($user->role == 'patient') {
+            $appointments = $query->where('patient_id', $user->id)
                                   ->with(['dentist', 'diagnostic'])
                                   ->orderBy('appointment_date', 'asc')
                                   ->get();

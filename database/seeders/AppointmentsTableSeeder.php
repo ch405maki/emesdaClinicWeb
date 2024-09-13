@@ -13,7 +13,7 @@ class AppointmentsTableSeeder extends Seeder
     public function run()
     {
         Appointment::create([
-            'student_id' => 1, // User ID for Mark Manuel
+            'patient_id' => 1, // User ID for Mark Manuel
             'dentist_id' => 2, // User ID for Dr. Smith
             'appointment_date' => now()->addDays(1),
             'status' => 'confirmed',
@@ -33,7 +33,7 @@ class AppointmentsTableSeeder extends Seeder
         ]);
 
         Appointment::create([
-            'student_id' => 3, // User ID for Jane Student
+            'patient_id' => 3, // User ID for Jane Student
             'dentist_id' => 2, // User ID for Dr. Smith
             'appointment_date' => now()->addDays(2),
             'status' => 'confirmed',

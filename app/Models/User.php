@@ -12,35 +12,46 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'age', 'sex', 'civil_status', 'course_year', 'contact', 'position', 'address', 'ioe_name', 'ioe_relation', 'ioe_address', 'ioe_contact',
+        'name',
+        'email',
+        'password',
+        'role',
+        'age',
+        'sex',
+        'civil_status',
+        'contact',
+        'address',
+        'occupation',
+        'officeAddress',
+        'telNumber',
     ];
 
     protected $hidden = [
         'password', 'remember_token',
     ];
-
+    
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    public function appointmentsAsStudent()
+    
+    public function appointmentsAsPatient()
     {
-        return $this->hasMany(Appointment::class, 'student_id');
+        return $this->hasMany(Appointment::class, 'patient_id');
     }
-
-    public function appointmentsAsDentist()
+    
+    public function appointmentsAsDoctor()
     {
-        return $this->hasMany(Appointment::class, 'dentist_id');
+        return $this->hasMany(Appointment::class, 'doctor_id');
     }
-
-    public function isStudent()
+    
+    public function isPatient()
     {
-        return $this->role === 'student';
+        return $this->role === 'patient';
     }
-
-    public function isDentist()
+    
+    public function isDoctor()
     {
-        return $this->role === 'dentist';
+        return $this->role === 'doctor';
     }
 }
