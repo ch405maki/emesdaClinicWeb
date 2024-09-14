@@ -4,7 +4,7 @@
   
       <AuthenticatedLayout>
         <template #header>
-          <div class="flex justify-between items-center h-6 bg-red-900">
+          <div class="flex justify-between items-center h-6">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Appointment Details</h2>
             <!-- Button to make a diagnostic -->
             <button @click="redirectToDiagnosticForm" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
@@ -13,10 +13,10 @@
           </div>
         </template>
   
-        <div class="py-6 px-6">
+        <div class="py-6">
           <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <!-- Appointment Information Card -->
-            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="bg-white shadow overflow-hidden rounded-lg">
               <div class="px-4 py-5 sm:px-6">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">Appointment Information</h3>
               </div>

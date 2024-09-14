@@ -6,7 +6,7 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
       </template>
   
-      <div class="py-6 px-6">
+      <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
           <!-- Dashboard Cards -->
           <v-row align="center" justify="center" class="p-0" dense>
@@ -132,7 +132,7 @@
   // Define method to handle actions
   const handleAction = (appointmentId) => {
     // Use the Inertia router to navigate to the show page
-    router.get(route('reports.show', appointmentId));
+    router.get(route('appointments.show', appointmentId));
   };
   
   // Define method to format date

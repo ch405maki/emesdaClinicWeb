@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full bg-gray-100">
+  <div class=" min-h-screen bg-gray-100">
     <div class="h-full">
       <div class="min-h-full">
         <!-- When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars -->
@@ -50,6 +50,7 @@
                   </svg>
                 </a>
                 <div class="relative ml-5 flex-shrink-0">
+                  
                   <button type="button" class="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2" @click="toggleProfileMenu">
                     <span class="sr-only">Open user menu</span>
                     <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80" alt="">
@@ -57,11 +58,50 @@
                   <!-- Profile dropdown -->
                   <div v-if="isProfileMenuOpen" @click.away="isProfileMenuOpen = false" class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <a href="#" class="block py-2 px-4 text-sm text-gray-700">Hi, {{ user.name }}</a>
-                    <a :href="route('profile.edit')" class="block py-2 px-4 text-sm text-gray-700">Your Profile</a>
-                    <a :href="route('logout')" method="post" as="button" class="block py-2 px-4 text-sm text-gray-700">Sign out</a>
+                    <a :href="route('profile.edit')" class="block py-2 px-4 text-sm text-gray-700">Your Profile</a> 
+                    <a :href="route('logout')"  as="button" class="block py-2 px-4 text-sm text-gray-700">Sign out</a>
+                    <Dropdown align="right" width="48">
+                    <template #content>
+                      <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
+                      <DropdownLink :href="route('logout')" method="post" as="button">
+                        Log Out
+                      </DropdownLink>
+                    </template>
+                  </Dropdown>
                   </div>
                 </div>
                 <p class="ml-2 text-invicta uppercase font-bold text-gray-700 text-sm tracking-wide leading-tight">Hi, {{ user.name }}</p>
+                <Dropdown align="right" width="48">
+                  <template #trigger>
+                    <span class="inline-flex rounded-md">
+                      <button
+                        type="button"
+                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                      >
+                        {{ user.name }}
+                        <svg
+                          class="ml-2 -mr-0.5 h-4 w-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </span>
+                  </template>
+
+                  <template #content>
+                    <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
+                    <DropdownLink :href="route('logout')" method="post" as="button">
+                      Log Out
+                    </DropdownLink>
+                  </template>
+                </Dropdown>
               </div>
             </div>
           </div>
@@ -132,8 +172,8 @@
             </nav>
           </div>
           <main class="lg:col-span-9 xl:col-span-10">
-            <header :class="headerClass" v-if="$slots.header">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 rounded-lg bg-purple-900">
+            <header v-if="$slots.header" class="mx-8">
+            <div class="max-w-7xl mx-auto py-6 px-4 mx-10 sm:px-6 lg:px-8 rounded-lg bg-white shadow">
             <slot name="header" />
             </div>
             </header>
@@ -151,11 +191,18 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { usePage } from '@inertiajs/vue3';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import { Inertia } from '@inertiajs/inertia';
+import Dropdown from '@/Components/Dropdown.vue';
+import DropdownLink from '@/Components/DropdownLink.vue';
+import { Link } from '@inertiajs/vue3';
 
 // State management using ref for menu visibility
 const isMenuOpen = ref(false);
 const isProfileMenuOpen = ref(false);
+
+const logout = () => {
+  Inertia.post(route('logout'));
+};
 
 // Methods to toggle the menus
 const toggleMenu = () => {
