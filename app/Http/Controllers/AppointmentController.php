@@ -40,36 +40,12 @@ class AppointmentController extends Controller
 
     public function store(Request $request)
     {
-        // Convert boolean-like strings to actual boolean values
-        $request->merge([
-            'good_health' => filter_var($request->input('good_health'), FILTER_VALIDATE_BOOLEAN),
-            'medical_treatment' => filter_var($request->input('medical_treatment'), FILTER_VALIDATE_BOOLEAN),
-            'surgical_operation' => filter_var($request->input('surgical_operation'), FILTER_VALIDATE_BOOLEAN),
-            'hospitalized' => filter_var($request->input('hospitalized'), FILTER_VALIDATE_BOOLEAN),
-            'tobacco' => filter_var($request->input('tobacco'), FILTER_VALIDATE_BOOLEAN),
-            'alcohol' => filter_var($request->input('alcohol'), FILTER_VALIDATE_BOOLEAN),
-            'pregnant' => filter_var($request->input('pregnant'), FILTER_VALIDATE_BOOLEAN),
-        ]);
-
         // Validate the request data
         $validated = $request->validate([
             'patient_id' => 'required|integer',
             'dentist_id' => 'required|integer',
             'appointment_date' => 'required|date',
             'status' => 'required|in:pending,confirmed,completed,canceled',
-            'last_dentist' => 'nullable|string|max:255',
-            'occlusion' => 'nullable|string|max:255',
-            'dent_anomaly' => 'nullable|string|max:255',
-            'good_health' => 'required|boolean',
-            'medical_treatment' => 'required|boolean',
-            'surgical_operation' => 'required|boolean',
-            'hospitalized' => 'required|boolean',
-            'medication' => 'nullable|string|max:255',
-            'tobacco' => 'required|boolean',
-            'alcohol' => 'required|boolean',
-            'allergy' => 'nullable|string|max:255',
-            'pregnant' => 'nullable|boolean',
-            'other' => 'nullable|string|max:255',
         ]);
 
         // Create a new appointment with all fields

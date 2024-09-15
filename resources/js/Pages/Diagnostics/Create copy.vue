@@ -25,105 +25,6 @@
 
             <!-- Diagnostic form -->
             <form @submit.prevent="submitForm" class="space-y-4">
-
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-               <!-- Occlusion -->
-              <div>
-                <label for="occlusion" class="block text-sm font-medium text-gray-700">Occlusion</label>
-                <input type="text" v-model="form.occlusion" id="occlusion" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-
-              <!-- Condition -->
-              <div>
-                <label for="condition" class="block text-sm font-medium text-gray-700">Condition</label>
-                <input type="text" v-model="form.condition" id="condition" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-
-              <!-- Hygiene -->
-              <div>
-                <label for="hygiene" class="block text-sm font-medium text-gray-700">Hygiene</label>
-                <input type="text" v-model="form.hygiene" id="hygiene" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-
-              <!-- Denture Upper -->
-              <div>
-                <label for="denture_upper" class="block text-sm font-medium text-gray-700">Denture Upper</label>
-                <input type="text" v-model="form.denture_upper" id="denture_upper" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-
-              <!-- Denture Lower -->
-              <div>
-                <label for="denture_lower" class="block text-sm font-medium text-gray-700">Denture Lower</label>
-                <input type="text" v-model="form.denture_lower" id="denture_lower" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-
-              <!-- Since Upper -->
-              <div>
-                <label for="since_upper" class="block text-sm font-medium text-gray-700">Since Upper</label>
-                <input type="text" v-model="form.since_upper" id="since_upper" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-
-              <!-- Since Lower -->
-              <div>
-                <label for="since_lower" class="block text-sm font-medium text-gray-700">Since Lower</label>
-                <input type="text" v-model="form.since_lower" id="since_lower" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-
-              <!-- Abnormalities -->
-              <div>
-                <label for="abnormalities" class="block text-sm font-medium text-gray-700">Abnormalities</label>
-                <input type="text" v-model="form.abnormalities" id="abnormalities" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-
-              <!-- General Condition -->
-              <div>
-                <label for="general_condition" class="block text-sm font-medium text-gray-700">General Condition</label>
-                <input type="text" v-model="form.general_condition" id="general_condition" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-
-              <!-- Physician -->
-              <div>
-                <label for="physician" class="block text-sm font-medium text-gray-700">Physician</label>
-                <input type="text" v-model="form.physician" id="physician" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-
-              <!-- Nature of Treatment -->
-              <div>
-                <label for="nature_treatment" class="block text-sm font-medium text-gray-700">Nature of Treatment</label>
-                <input type="text" v-model="form.nature_treatment" id="nature_treatment" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-
-              <!-- Allergies -->
-              <div>
-                <label for="alergies" class="block text-sm font-medium text-gray-700">Allergies</label>
-                <input type="text" v-model="form.alergies" id="alergies" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-
-              <!-- History -->
-              <div>
-                <label for="history" class="block text-sm font-medium text-gray-700">History</label>
-                <input type="text" v-model="form.history" id="history" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-
-              <!-- Ailments -->
-              <div>
-                <label for="ailments" class="block text-sm font-medium text-gray-700">Ailments</label>
-                <input type="text" v-model="form.ailments" id="ailments" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-
-              <!-- Blood Pressure -->
-              <div>
-                <label for="bp" class="block text-sm font-medium text-gray-700">Blood Pressure</label>
-                <input type="text" v-model="form.bp" id="bp" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-
-              <!-- Drugs -->
-              <div>
-                <label for="drugs" class="block text-sm font-medium text-gray-700">Drugs</label>
-                <input type="text" v-model="form.drugs" id="drugs" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
-              </div>
-
               <!-- Diagnostic Description -->
               <div>
                 <label for="description" class="block text-sm font-medium text-gray-700">Diagnostic Description</label>
@@ -180,7 +81,7 @@
               <input type="hidden" v-model="form.appointment_id" />
 
               <!-- dental chart here -->
-              <!-- Upper Teeth Section -->
+               <!-- Upper Teeth Section -->
               <div class="dental-chart">
                 <div class="row">
                   <label class="row-label text-blue-700">Operation:</label>

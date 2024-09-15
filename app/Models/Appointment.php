@@ -10,7 +10,10 @@ class Appointment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'patient_id', 'appointment_date', 'status', 'last_dentist', 'occlusion', 'dent_anomaly', 'good_health', 'medical_treatment', 'surgical_operation', 'hospitalized', 'medication', 'tobacco', 'alcohol', 'allergy', 'pregnant', 'other',
+        'patient_id', 
+        'dentist_id',
+        'appointment_date', 
+        'status'
     ];
 
     protected $casts = [

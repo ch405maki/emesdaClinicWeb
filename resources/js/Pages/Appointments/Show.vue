@@ -26,18 +26,13 @@
                     <dt class="text-sm font-medium text-gray-500">Status</dt>
                     <dd class="mt-1 text-sm">
                       <span :class="statusClass(appointment.status)">
-                        {{ appointment.status }}
+                        <div class="font-bold text-lg">{{ appointment.status }}</div>
                       </span>
                     </dd>
                   </div>
                   <div class="sm:col-span-1">
                     <dt class="text-sm font-medium text-gray-500">Appointment Date</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ formattedDate(appointment.appointment_date) }}</dd>
-                  </div>
-                  <!-- Additional Fields -->
-                  <div class="sm:col-span-1" v-for="(value, key) in additionalFields(appointment)" :key="key">
-                    <dt class="text-sm font-medium text-gray-500">{{ key }}</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ value }}</dd>
+                    <dd class="mt-1 text-gray-900 font-medium text-lg">{{ formattedDate(appointment.appointment_date) }}</dd>
                   </div>
                 </dl>
               </div>
@@ -59,7 +54,7 @@
             </div>
   
             <!-- Dentist Information Card -->
-            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg hidden">
               <div class="px-4 py-5 sm:px-6">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">Dentist Information</h3>
               </div>
@@ -104,25 +99,6 @@
   // Function to handle button click and redirect to Diagnostic Form
   function redirectToDiagnosticForm() {
     router.get(`/diagnostic/form`, { id: props.appointment.id });
-  }
-  
-  // Method to generate additional fields for appointment
-  function additionalFields(appointment) {
-    return {
-      "Last Dentist": appointment.last_dentist || 'N/A',
-      "Occlusion": appointment.occlusion || 'N/A',
-      "Dental Anomalies": appointment.dent_anomaly || 'N/A',
-      "General Health Status": appointment.good_health ? 'Good' : 'Poor',
-      "Currently Under Medical Treatment": appointment.medical_treatment ? 'Yes' : 'No',
-      "Surgical Operation History": appointment.surgical_operation ? 'Yes' : 'No',
-      "Hospitalized Before": appointment.hospitalized ? 'Yes' : 'No',
-      "Current Medications": appointment.medication || 'None',
-      "Uses Tobacco": appointment.tobacco ? 'Yes' : 'No',
-      "Consumes Alcohol": appointment.alcohol ? 'Yes' : 'No',
-      "Allergies": appointment.allergy || 'None',
-      "Pregnant": appointment.pregnant !== null ? (appointment.pregnant ? 'Yes' : 'No') : 'N/A',
-      "Other Information": appointment.other || 'None'
-    };
   }
 
   // Method to generate fields for patient information

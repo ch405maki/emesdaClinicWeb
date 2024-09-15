@@ -2,10 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
-use App\Models\Appointment;
 use App\Models\Diagnostic;
 
 class DiagnosticsTableSeeder extends Seeder
@@ -15,8 +12,6 @@ class DiagnosticsTableSeeder extends Seeder
      */
     public function run()
     {
-        // Ensure the AppointmentsTableSeeder is run before this one, or the appointments must exist
-
         // Create diagnostics for the first appointment
         Diagnostic::create([
             'appointment_id' => 1, // ID for the first appointment
@@ -38,7 +33,6 @@ class DiagnosticsTableSeeder extends Seeder
                     3 => 'M',
                     4 => 'Un.',
                     5 => 'RF',
-                    // Add more teeth as needed
                 ],
                 'Middle Operation' => [
                     1 => 'P',
@@ -46,7 +40,6 @@ class DiagnosticsTableSeeder extends Seeder
                     3 => 'PJC',
                     4 => 'CF',
                     5 => 'AB',
-                    // Add more teeth as needed
                 ],
                 'Middle Condition' => [
                     1 => 'P',
@@ -54,7 +47,6 @@ class DiagnosticsTableSeeder extends Seeder
                     3 => 'PJC',
                     4 => 'CF',
                     5 => 'AB',
-                    // Add more teeth as needed
                 ],
                 'Middle Bottom Operation' => [
                     1 => 'GI',
@@ -62,7 +54,6 @@ class DiagnosticsTableSeeder extends Seeder
                     3 => 'M',
                     4 => 'Un.',
                     5 => 'RF',
-                    // Add more teeth as needed
                 ],
                 'Middle Bottom Condition' => [
                     1 => 'GI',
@@ -70,7 +61,6 @@ class DiagnosticsTableSeeder extends Seeder
                     3 => 'M',
                     4 => 'Un.',
                     5 => 'RF',
-                    // Add more teeth as needed
                 ],
                 'Lower Operation' => [
                     1 => 'GI',
@@ -78,7 +68,6 @@ class DiagnosticsTableSeeder extends Seeder
                     3 => 'CF',
                     4 => 'Am',
                     5 => 'AB',
-                    // Add more teeth as needed
                 ],
                 'Lower Condition' => [
                     1 => 'GI',
@@ -86,9 +75,25 @@ class DiagnosticsTableSeeder extends Seeder
                     3 => 'CF',
                     4 => 'Am',
                     5 => 'AB',
-                    // Add more teeth as needed
                 ],
             ]),
+            // Additional fields
+            'occlusion' => 'Normal',
+            'condition' => 'Good',
+            'hygiene' => 'Good',
+            'denture_upper' => 'No',
+            'denture_lower' => 'No',
+            'since_upper' => null,
+            'since_lower' => null,
+            'abnormalities' => 'None',
+            'general_condition' => 'Healthy',
+            'physician' => 'Dr. Smith',
+            'nature_treatment' => 'None',
+            'alergies' => 'None',
+            'history' => 'No significant medical history',
+            'ailments' => 'None',
+            'bp' => '120/80',
+            'drugs' => 'None',
         ]);
 
         // Create diagnostics for the second appointment
@@ -104,7 +109,6 @@ class DiagnosticsTableSeeder extends Seeder
                     3 => 'AB',
                     4 => 'PJC',
                     5 => 'M',
-                    // Add more teeth as needed
                 ],
                 'Upper Condition' => [
                     1 => 'C',
@@ -112,7 +116,6 @@ class DiagnosticsTableSeeder extends Seeder
                     3 => 'AB',
                     4 => 'PJC',
                     5 => 'M',
-                    // Add more teeth as needed
                 ],
                 'Middle Operation' => [
                     1 => 'Am',
@@ -120,7 +123,6 @@ class DiagnosticsTableSeeder extends Seeder
                     3 => 'GI',
                     4 => 'Un.',
                     5 => 'P',
-                    // Add more teeth as needed
                 ],
                 'Middle Condition' => [
                     1 => 'Am',
@@ -128,7 +130,6 @@ class DiagnosticsTableSeeder extends Seeder
                     3 => 'GI',
                     4 => 'Un.',
                     5 => 'P',
-                    // Add more teeth as needed
                 ],
                 'Middle Bottom Operation' => [
                     1 => 'C',
@@ -136,7 +137,6 @@ class DiagnosticsTableSeeder extends Seeder
                     3 => 'M',
                     4 => 'Un.',
                     5 => 'CF',
-                    // Add more teeth as needed
                 ],
                 'Middle Bottom Condition' => [
                     1 => 'C',
@@ -144,7 +144,6 @@ class DiagnosticsTableSeeder extends Seeder
                     3 => 'M',
                     4 => 'Un.',
                     5 => 'CF',
-                    // Add more teeth as needed
                 ],
                 'Lower Operation' => [
                     1 => 'RF',
@@ -152,7 +151,6 @@ class DiagnosticsTableSeeder extends Seeder
                     3 => 'CF',
                     4 => 'AB',
                     5 => 'GI',
-                    // Add more teeth as needed
                 ],
                 'Lower Condition' => [
                     1 => 'RF',
@@ -160,11 +158,25 @@ class DiagnosticsTableSeeder extends Seeder
                     3 => 'CF',
                     4 => 'AB',
                     5 => 'GI',
-                    // Add more teeth as needed
                 ],
             ]),
+            // Additional fields
+            'occlusion' => 'Slight misalignment',
+            'condition' => 'Moderate',
+            'hygiene' => 'Fair',
+            'denture_upper' => 'No',
+            'denture_lower' => 'No',
+            'since_upper' => null,
+            'since_lower' => null,
+            'abnormalities' => 'Cavity',
+            'general_condition' => 'Fair',
+            'physician' => 'Dr. Adams',
+            'nature_treatment' => 'Cavity filling',
+            'alergies' => 'None',
+            'history' => 'Occasional headaches',
+            'ailments' => 'None',
+            'bp' => '125/85',
+            'drugs' => 'None',
         ]);
     }
-
 }
-

@@ -88,6 +88,7 @@ const userId = page.props.userId;
 
 const form = ref({
   patient_id: userId,
+  dentist_id: '2',
   appointment_date: '',
   status: 'pending',
 });
@@ -130,26 +131,6 @@ const handleSubmit = async () => {
       dentist_id: '2',
       appointment_date: '',
       status: 'pending',
-      last_dentist: '',
-      occlusion: '',
-      dent_anomaly: '',
-      good_health: '',
-      good_health_details: '',
-      medical_treatment: '',
-      medical_treatment_details: '',
-      surgical_operation: '',
-      surgical_operation_details: '',
-      hospitalized: '',
-      hospitalized_details: '',
-      medication: '',
-      tobacco: '',
-      tobacco_details: '',
-      alcohol: '',
-      alcohol_details: '',
-      allergy: '',
-      pregnant: '',
-      pregnant_details: '',
-      other: ''
     };
   } catch (error) {
     Swal.fire({

@@ -284,7 +284,7 @@
                                   <dt class="text-sm font-medium text-gray-500">Appointment Date</dt>
                                   <dd class="mt-1 text-sm text-gray-900">{{ formattedDate(appointment.appointment_date) }}</dd>
                               </div>
-                              <div class="sm:col-span-1" v-for="(value, key) in additionalFields(appointment)" :key="key">
+                              <div class="sm:col-span-1" v-for="(value, key) in additionalFields(latestDiagnostic)" :key="key">
                                   <dt class="text-sm font-medium text-gray-500">{{ key }}</dt>
                                   <dd class="mt-1 text-sm text-gray-900">{{ value }}</dd>
                               </div>
@@ -398,21 +398,10 @@ function formattedDate(dateString) {
 }
 
 // Additional fields for appointment
-function additionalFields(appointment) {
+function additionalFields(latestDiagnostic) {
   return {
-    "Last Dentist": appointment.last_dentist || 'N/A',
-    "Occlusion": appointment.occlusion || 'N/A',
-    "Dental Anomalies": appointment.dent_anomaly || 'N/A',
-    "General Health Status": appointment.good_health ? 'Good' : 'Poor',
-    "Currently Under Medical Treatment": appointment.medical_treatment ? 'Yes' : 'No',
-    "Surgical Operation History": appointment.surgical_operation ? 'Yes' : 'No',
-    "Hospitalized Before": appointment.hospitalized ? 'Yes' : 'No',
-    "Current Medications": appointment.medication || 'None',
-    "Uses Tobacco": appointment.tobacco ? 'Yes' : 'No',
-    "Consumes Alcohol": appointment.alcohol ? 'Yes' : 'No',
-    "Allergies": appointment.allergy || 'None',
-    "Pregnant": appointment.pregnant !== null ? (appointment.pregnant ? 'Yes' : 'No') : 'N/A',
-    "Other Information": appointment.other || 'None'
+    "Occlusion": latestDiagnostic.occlusion || 'N/A',
+    "Condition": latestDiagnostic.condition || 'N/A',
   };
 }
 
