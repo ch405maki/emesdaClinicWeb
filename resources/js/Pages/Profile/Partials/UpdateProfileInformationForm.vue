@@ -75,19 +75,6 @@
             <InputError class="mt-2" :message="form.errors.civil_status" />
           </div>
   
-          <!-- Course Year -->
-          <div class="col-span-1">
-            <InputLabel for="course_year" value="Course Year" />
-            <TextInput
-              id="course_year"
-              type="text"
-              class="mt-1 block w-full"
-              v-model="form.course_year"
-              required
-            />
-            <InputError class="mt-2" :message="form.errors.course_year" />
-          </div>
-  
           <!-- Contact -->
           <div class="col-span-1">
             <InputLabel for="contact" value="Contact" />
@@ -100,20 +87,7 @@
             />
             <InputError class="mt-2" :message="form.errors.contact" />
           </div>
-  
-          <!-- Position -->
-          <div class="col-span-1">
-            <InputLabel for="position" value="Position" />
-            <TextInput
-              id="position"
-              type="text"
-              class="mt-1 block w-full"
-              v-model="form.position"
-              required
-            />
-            <InputError class="mt-2" :message="form.errors.position" />
-          </div>
-  
+
           <!-- Address -->
           <div class="col-span-1">
             <InputLabel for="address" value="Address" />
@@ -126,57 +100,39 @@
             />
             <InputError class="mt-2" :message="form.errors.address" />
           </div>
-  
-          <!-- In Case of Emergency: Name -->
+
           <div class="col-span-1">
-            <InputLabel for="ioe_name" value="In Case of Emergency: Name" />
+            <InputLabel for="occupation" value="Occupation" />
             <TextInput
-              id="ioe_name"
+              id="occupation"
               type="text"
               class="mt-1 block w-full"
-              v-model="form.ioe_name"
+              v-model="form.occupation"
               required
             />
-            <InputError class="mt-2" :message="form.errors.ioe_name" />
+            <InputError class="mt-2" :message="form.errors.occupation" />
           </div>
-  
-          <!-- In Case of Emergency: Relation -->
           <div class="col-span-1">
-            <InputLabel for="ioe_relation" value="In Case of Emergency: Relation" />
+            <InputLabel for="officeAddress" value="Office Address" />
             <TextInput
-              id="ioe_relation"
+              id="officeAddress"
               type="text"
               class="mt-1 block w-full"
-              v-model="form.ioe_relation"
+              v-model="form.officeAddress"
               required
             />
-            <InputError class="mt-2" :message="form.errors.ioe_relation" />
+            <InputError class="mt-2" :message="form.errors.officeAddress" />
           </div>
-  
-          <!-- In Case of Emergency: Address -->
           <div class="col-span-1">
-            <InputLabel for="ioe_address" value="In Case of Emergency: Address" />
+            <InputLabel for="telNumber" value="Tel. Number" />
             <TextInput
-              id="ioe_address"
+              id="telNumber"
               type="text"
               class="mt-1 block w-full"
-              v-model="form.ioe_address"
+              v-model="form.telNumber"
               required
             />
-            <InputError class="mt-2" :message="form.errors.ioe_address" />
-          </div>
-  
-          <!-- In Case of Emergency: Contact -->
-          <div class="col-span-1">
-            <InputLabel for="ioe_contact" value="In Case of Emergency: Contact" />
-            <TextInput
-              id="ioe_contact"
-              type="text"
-              class="mt-1 block w-full"
-              v-model="form.ioe_contact"
-              required
-            />
-            <InputError class="mt-2" :message="form.errors.ioe_contact" />
+            <InputError class="mt-2" :message="form.errors.telNumber" />
           </div>
         </div>
   
@@ -196,7 +152,7 @@
       </form>
     </section>
   </template>
-  Script
+
   <script setup>
   import InputError from '@/Components/InputError.vue';
   import InputLabel from '@/Components/InputLabel.vue';
@@ -218,16 +174,13 @@
   const form = useForm({
     name: user.name,
     email: user.email,
-    age: user.age, // Add the additional fields here
+    age: user.age,
     sex: user.sex,
     civil_status: user.civil_status,
-    course_year: user.course_year,
     contact: user.contact,
-    position: user.position,
     address: user.address,
-    ioe_name: user.ioe_name,
-    ioe_relation: user.ioe_relation,
-    ioe_address: user.ioe_address,
-    ioe_contact: user.ioe_contact,
+    occupation: user.occupation,
+    officeAddress: user.officeAddress,
+    telNumber: user.telNumber,
   });
   </script>

@@ -29,14 +29,11 @@ class ProfileController extends Controller
                 'age' => $user->age,
                 'sex' => $user->sex,
                 'civil_status' => $user->civil_status,
-                'course_year' => $user->course_year,
                 'contact' => $user->contact,
-                'position' => $user->position,
                 'address' => $user->address,
-                'ioe_name' => $user->ioe_name,
-                'ioe_relation' => $user->ioe_relation,
-                'ioe_address' => $user->ioe_address,
-                'ioe_contact' => $user->ioe_contact,
+                'occupation' => $user->occupation,
+                'officeAddress' => $user->officeAddress,
+                'telNumber' => $user->telNumber,
             ],
         ]);
     }

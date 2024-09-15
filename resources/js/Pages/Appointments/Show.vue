@@ -124,19 +124,20 @@
       "Other Information": appointment.other || 'None'
     };
   }
-  
+
   // Method to generate fields for patient information
   function patientFields(patient) {
     return {
       "Name": patient.name,
+      "Address": patient.address,
       "Email": patient.email,
-      "Role": patient.role,
+      "Contact": patient.contact,
       "Age": patient.age,
       "Sex": patient.sex,
       "Civil Status": patient.civil_status,
-      "Contact": patient.contact,
-      "Position": patient.position,
-      "Address": patient.address,
+      "Occupation": patient.occupation,
+      "Office Address": patient.officeAddress,
+      "Tel. Number": patient.telNumber,
     };
   }
   
