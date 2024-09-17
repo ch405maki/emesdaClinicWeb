@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
@@ -61,6 +62,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
     Route::get('/reports/{id}/export-pdf', [ReportController::class, 'exportPdf'])->name('reports.export-pdf');
+});
+
+Route::get('/download-apk', function () {
+    $filePath = public_path('application/dentalClinic.apk');
+    
+    if (file_exists($filePath)) {
+        return response()->download($filePath, 'dentalClinic.apk');
+    } else {
+        abort(404, 'File not found.');
+    }
 });
 
 require __DIR__.'/auth.php';
