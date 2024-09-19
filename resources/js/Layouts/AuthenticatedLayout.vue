@@ -14,7 +14,7 @@
                     <img src="/images/dentallogo.png" alt="Image Logo" class="max-w-full h-full max-h-8 mr-2 transition-transform duration-300 transform hover:scale-105">
                   </Link>
                   <div>
-                    <div class="text-invicta uppercase font-bold text-gray-700  text-sm tracking-wide leading-tight">E M E S D A &nbsp;  K A L I N G A</div>
+                    <div class="text-invicta uppercase font-bold text-gray-700  text-sm tracking-wide leading-tight">E M E S &nbsp; D A &nbsp;  K A L I N G A</div>
                     <div class="text-invicta uppercase font-bold text-gray-700 text-sm tracking-wide leading-tight">D E N T A L &nbsp; C L I N I C</div>
                   </div>
                 </div>

@@ -25,7 +25,6 @@
                     <!-- Conditional rendering based on screen size -->
                     <th class="px-4 py-2 text-left" v-if="isSmScreen || !isSmScreen">Date</th>
                     <th class="px-4 py-2 text-left" v-if="!isSmScreen">Diagnosis</th>
-                    <th class="px-4 py-2 text-left" v-if="!isSmScreen">Student</th>
                     <th class="px-4 py-2 text-left" v-if="!isSmScreen">Dentist</th>
                     <th class="px-4 py-2" v-if="isSmScreen || !isSmScreen">Actions</th>
                     </tr>
@@ -42,7 +41,6 @@
                     <!-- Conditionally show other columns based on screen size -->
                     <template v-if="!isSmScreen">
                         <td class="px-4 py-2">{{ appointment.diagnostic?.description || 'No description available' }}</td>
-                        <td class="px-4 py-2">{{ appointment.student?.name || 'No student' }}</td>
                         <td class="px-4 py-2">{{ appointment.dentist?.name || 'No dentist' }}</td>
                     </template>
 
