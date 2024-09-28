@@ -12,6 +12,7 @@ use App\Http\Controllers\DiagnosticController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DashboardController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -45,14 +46,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/appointments/manage', [AppointmentController::class, 'manage'])->name('appointments.manage');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     // Appointments
     Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
     Route::get('/appointment/form', [AppointmentController::class, 'create'])->name('appointments.create');
     Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
     Route::get('/appointments/{id}', [AppointmentController::class, 'show'])->name('appointments.show');
-    Route::put('/appointments/{appointment}/update-status', [AppointmentController::class, 'updateStatus'])->name('appointments.update-status'); // Add this line
+    Route::put('/appointments/{appointment}/update-status', [AppointmentController::class, 'updateStatus'])->name('appointments.update-status');
 
+    Route::get('/appointments/manage', [AppointmentController::class, 'manage'])->name('appointments.manage');
+    Route::get('/appointments/view/{id}', [AppointmentController::class, 'view'])->name('appointments.view');
     // Diagnostics
     Route::get('/diagnostic', [DiagnosticController::class, 'index'])->name('diagnostic.index');
     Route::get('/diagnostic/form', [DiagnosticController::class, 'create'])->name('diagnostic.create');
