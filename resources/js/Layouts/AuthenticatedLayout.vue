@@ -70,14 +70,14 @@
           <nav v-if="isMenuOpen" class="lg:hidden" aria-label="Global" @click.away="isMenuOpen = false">
             <div class="mx-auto max-w-3xl space-y-1 px-2 pt-2 pb-3 sm:px-4">
               <a href="#" class="bg-gray-100 text-gray-900 block rounded-md py-2 px-3 text-base font-medium">Home</a>
-              <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Popular</a>
-              <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Communities</a>
-              <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Trending</a>
+              <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Item</a>
+              <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Item</a>
+              <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Item</a>
             </div>
             <div class="border-t border-gray-200 pt-4">
               <div class="mx-auto max-w-3xl space-y-1 px-4">
-                <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Your Profile</a>
-                <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Settings</a>
+                <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Profile</a>
+                <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Item</a>
                 <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Sign out</a>
               </div>
             </div>
@@ -117,15 +117,24 @@
                     <svg class="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" x-description="Heroicon name: outline/arrow-trending-up" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"></path>
                     </svg>
-                    <span class="truncate">Reports</span>
+                    <span class="truncate">Pending Requests</span>
+                  </a>
+                  <a :href="route('reports.index')" class="text-gray-700 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md" x-state-description="undefined: &quot;bg-gray-200 text-gray-900&quot;, undefined: &quot;text-gray-700 hover:bg-gray-50&quot;">
+                    <svg class="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" x-description="Heroicon name: outline/arrow-trending-up" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"></path>
+                    </svg>
+                    <span class="truncate">Patients</span>
                   </a>
                 
               </div>
               <div class="pt-10">
-                <p class="px-3 text-sm font-medium text-gray-500" id="communities-headline">Additional Options</p>
+                <p class="px-3 text-sm font-medium text-gray-500" id="communities-headline">Settings</p>
                 <div class="mt-3 space-y-2" aria-labelledby="communities-headline">
                     <a href="#" class="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900">
-                      <span class="truncate">Option 1</span>
+                      <span class="truncate">Availability</span>
+                    </a>
+                    <a href="#" class="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900">
+                      <span class="truncate">Manage Staff</span>
                     </a>
                 </div>
               </div>

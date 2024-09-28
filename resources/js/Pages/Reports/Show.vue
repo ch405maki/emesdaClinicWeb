@@ -33,56 +33,56 @@
 
               <div class="pdf-body grid grid-cols-1 gap-y-6">
                   <!-- Diagnostic Information -->
-                  <div v-if="appointment.diagnostic" class="bg-white overflow-hidden">
+                  <div v-if="appointment.diagnostic" class="overflow-hidden">
                   <div class="px-4 py-2">
-                    <h3 class="text-base leading-6 font-medium text-gray-900">Diagnostic Information</h3>
+                    <h3 class="text-dt leading-6 font-medium text-gray-900">Diagnostic Information</h3>
                   </div>
                   <div class="border-t border-gray-200 px-4 py-2">
                     <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3">
                       <div class="sm:col-span-1">
-                        <dt class="text-sm font-medium text-gray-500">Description</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ latestDiagnostic?.description || 'No diagnostic available' }}</dd>
+                        <dt class="text-dt font-medium text-gray-500">Description</dt>
+                        <dd class="mt-1 text-dd text-gray-900">{{ latestDiagnostic?.description || 'No diagnostic available' }}</dd>
                       </div>
                       <div class="sm:col-span-1">
-                        <dt class="text-sm font-medium text-gray-500">Service Rendered</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ latestDiagnostic?.service_rendered || 'No Service Rendered available' }}</dd>
+                        <dt class="text-dt font-medium text-gray-500">Service Rendered</dt>
+                        <dd class="mt-1 text-dd text-gray-900">{{ latestDiagnostic?.service_rendered || 'No Service Rendered available' }}</dd>
                       </div>
                       <div class="sm:col-span-1">
-                        <dt class="text-sm font-medium text-gray-500">Remarks</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ latestDiagnostic?.remarks || 'No Remarks available' }}</dd>
+                        <dt class="text-dt font-medium text-gray-500">Remarks</dt>
+                        <dd class="mt-1 text-dd text-gray-900">{{ latestDiagnostic?.remarks || 'No Remarks available' }}</dd>
                       </div>
                     </dl>
                   </div>
 
                   <div class="px-4 py-2">
-                    <h3 class="text-base leading-6 font-medium text-gray-900">Appointment Information</h3>
+                    <h3 class="text-dt leading-6 font-medium text-gray-900">Appointment Information</h3>
                   </div>
                   <div class="border-t border-gray-200 px-4 py-2 sm:p-6">
                     <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-4">
                     <div class="sm:col-span-1">
-                      <dt class="text-sm font-medium text-gray-500">Status</dt>
-                      <dd class="mt-1 text-sm text-gray-900">{{ appointment.status }}</dd>
+                      <dt class="text-dt font-medium text-gray-500">Status</dt>
+                      <dd class="mt-1 text-dd text-gray-900">{{ appointment.status }}</dd>
                     </div>
                     <div class="sm:col-span-1">
-                      <dt class="text-sm font-medium text-gray-500">Appointment Date</dt>
-                      <dd class="mt-1 text-sm text-gray-900">{{ formattedDate(appointment.appointment_date) }}</dd>
+                      <dt class="text-dt font-medium text-gray-500">Appointment Date</dt>
+                      <dd class="mt-1 text-dd text-gray-900">{{ formattedDate(appointment.appointment_date) }}</dd>
                     </div>
                     <div class="sm:col-span-1">
-                      <dt class="text-sm font-medium text-gray-500">Occlusion</dt>
-                      <dd class="mt-1 text-sm text-gray-900">{{ latestDiagnostic.occlusion }}</dd>
+                      <dt class="text-dt font-medium text-gray-500">Occlusion</dt>
+                      <dd class="mt-1 text-dd text-gray-900">{{ latestDiagnostic.occlusion }}</dd>
                     </div>
                     <div class="sm:col-span-1">
-                      <dt class="text-sm font-medium text-gray-500">Condition</dt>
-                      <dd class="mt-1 text-sm text-gray-900">{{ latestDiagnostic.condition }}</dd>
+                      <dt class="text-dt font-medium text-gray-500">Condition</dt>
+                      <dd class="mt-1 text-dd text-gray-900">{{ latestDiagnostic.condition }}</dd>
                     </div>
                     </dl>
                   </div>
                 </div>
 
               <!-- Odonto-stomatological Record -->
-              <div class="bg-white overflow-hidden px-4">
+              <div class="overflow-hidden px-4">
               <div class="py-2">
-                <h3 class="text-base leading-6font-medium text-gray-900">Odonto-stomatological Record</h3>
+                <h3 class="text-dt leading-6font-medium text-gray-900">Odonto-stomatological Record</h3>
               </div>
               <!-- Upper Teeth Section -->
               <div class="dental-chart">
@@ -99,9 +99,9 @@
                       font-size: 8px;
                       margin: 0;
                       padding: 0;
-                      display: flex;  /* Ensures the box uses flexbox */
-                      justify-content: center;  /* Centers content horizontally */
-                      align-items: center;  /* Centers content vertically */
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
                     "
                     type="text" 
                     maxlength="3"
@@ -127,7 +127,7 @@
               </div>
 
               <div class="image-section mb-8 mt-2">
-                <img src="/images/chart/upper.png" alt="Upper Teeth Chart" class="chart-image-sub ml-[6%]" />
+                <img src="/images/chart/upper.png" alt="Upper Teeth Chart" class="chart-image-sub ml-[9%]"/>
               </div>
 
               <!-- Middle Teeth Section -->
@@ -231,30 +231,30 @@
               <!-- Odonto-stomatological Record -->
 
               <!-- patient Information Card -->
-              <div class="bg-white overflow-hidden">
+              <div class="overflow-hidden">
                 <div class="px-4 py-2">
-                  <h3 class="text-base leading-6 font-medium text-gray-900">Patient Information</h3>
+                  <h3 class="text-dt leading-6 font-medium text-gray-900">Patient Information</h3>
                 </div>
                 <div class="border-t border-gray-200 px-4 py-2">
                   <dl class="grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-3">
                     <div class="sm:col-span-1" v-for="(value, key) in patientFields(appointment.patient)" :key="key">
-                      <dt class="text-sm font-medium text-gray-500">{{ key }}</dt>
-                      <dd class="mt-1 text-sm text-gray-900">{{ value }}</dd>
+                      <dt class="text-dt font-medium text-gray-500">{{ key }}</dt>
+                      <dd class="mt-1 text-dd text-gray-900">{{ value }}</dd>
                     </div>
                   </dl>
                 </div>
                 <div class="px-4 py-2">
-                  <h3 class="text-base leading-6 font-medium text-gray-900">Dentist Information</h3>
+                  <h3 class="text-dt leading-6 font-medium text-gray-900">Dentist Information</h3>
                 </div>
                 <div class="border-t border-gray-200 px-4 py-2">
                   <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                     <div class="sm:col-span-1">
-                      <dt class="text-sm font-medium text-gray-500">Name</dt>
-                      <dd class="mt-1 text-sm text-gray-900">{{ appointment.dentist.name }}</dd>
+                      <dt class="text-dt font-medium text-gray-500">Name</dt>
+                      <dd class="mt-1 text-dd text-gray-900">{{ appointment.dentist.name }}</dd>
                     </div>
                     <div class="sm:col-span-1">
-                      <dt class="text-sm font-medium text-gray-500">Email</dt>
-                      <dd class="mt-1 text-sm text-gray-900">{{ appointment.dentist.email }}</dd>
+                      <dt class="text-dt font-medium text-gray-500">Email</dt>
+                      <dd class="mt-1 text-dd text-gray-900">{{ appointment.dentist.email }}</dd>
                     </div>
                   </dl>
                 </div>
@@ -422,12 +422,17 @@ display: none;
 }
 
 .tooth-input {
-  width: 40px;   /* Increased width */
-  height: 40px;  /* Increased height */
+  width: 30px;
+  height: 40px;
   text-align: center;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px; /* Larger font size */
+  border-radius: 1px;
+  font-size: 8px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .chart-image {
@@ -438,5 +443,13 @@ display: none;
 .chart-image-sub {
   max-width: 38%;
   height: auto;
+}
+
+.text-dt{
+  font-size:13px;
+}
+
+.text-dd{
+  font-size:11px;
 }
 </style>
