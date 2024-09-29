@@ -11,6 +11,8 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DiagnosticController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StaffController;
+use App\Http\Controllers\DentistAvailabilityController;
 
 
 /*
@@ -67,6 +69,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
     Route::get('/reports/{id}/export-pdf', [ReportController::class, 'exportPdf'])->name('reports.export-pdf');
+
+    //Staff management
+    Route::get('/staff', [StaffController::class, 'index'])->name('staff');
+    Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
+    Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
+
+    Route::get('/dentist/availability', [DentistAvailabilityController::class, 'index'])->name('dentist.availability');
+    Route::post('/dentist/availability', [DentistAvailabilityController::class, 'store'])->name('dentist.availability.store');
+    Route::delete('/dentist/availability/{id}', [DentistAvailabilityController::class, 'destroy'])->name('availability.destroy');
 });
 
 Route::get('/download-apk', function () {
