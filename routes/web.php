@@ -11,6 +11,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DiagnosticController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SmsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
     Route::get('/reports/{id}/export-pdf', [ReportController::class, 'exportPdf'])->name('reports.export-pdf');
 });
+
+
+Route::match(['get', 'post'], '/send-sms', [SmsController::class, 'sendSms'])->name('sms.send');
+
 
 Route::get('/download-apk', function () {
     $filePath = public_path('application/dentalClinic.apk');
