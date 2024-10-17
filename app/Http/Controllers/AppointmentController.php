@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Appointment;
+use App\Models\DentistAvailability;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,9 +14,16 @@ class AppointmentController extends Controller
 {
     public function index()
     {
-        $appointments = Appointment::all(); // Fetch appointments from the database
+        $appointments = Appointment::all();
         return inertia('Appointments/Index', ['appointments' => $appointments]);
     }
+
+    public function manage()
+    {
+        $appointments = Appointment::where('status', 'pending')->get();
+        return inertia('Appointments/Manage', ['appointments' => $appointments]);
+    }
+    
 
     public function show($id)
     {
@@ -29,13 +37,27 @@ class AppointmentController extends Controller
         ]);
     }
 
+    public function view($id)
+    {
+        // Fetch the appointment by ID and include related diagnostic and user data
+        $appointment = Appointment::with(['patient', 'dentist', 'diagnostic'])
+            ->findOrFail($id);
+
+        // Render the view with the appointment data
+        return Inertia::render('Appointments/View', [
+            'appointment' => $appointment
+        ]);
+    }
+
     public function create()
     {
         // Get the ID of the currently logged-in user
         $userId = Auth::id();
+        $DentistAvailability = DentistAvailability::with('dentist')
+        ->where('date', '>=', now())
+        ->get();
 
-        // Pass the user ID to the view
-        return Inertia::render('Appointments/Create', ['userId' => $userId]);
+        return Inertia::render('Appointments/Create', ['userId' => $userId, 'availabilities' => $DentistAvailability]);
     }
 
     public function store(Request $request)
@@ -58,15 +80,20 @@ class AppointmentController extends Controller
 
 
     public function updateStatus(Request $request, Appointment $appointment)
-    {
-        $validated = $request->validate([
-            'status' => 'required|string|in:pending,confirmed,completed,canceled',
-        ]);
+{
+    $validated = $request->validate([
+        'status' => 'required|string|in:pending,confirmed,completed,canceled',
+    ]);
 
-        $appointment->update(['status' => $validated['status']]);
+    // Update appointment status
+    $appointment->update(['status' => $validated['status']]);
 
-        //return redirect()->back()->with('success', 'Appointment status updated successfully.');
-    }
+    // Redirect to the manage page with a flash success message using Inertia
+    return redirect()->back()->with('success', 'Appointment status updated successfully.');
+
+}
+    
+
 
     public function destroy(Appointment $appointment)
     {

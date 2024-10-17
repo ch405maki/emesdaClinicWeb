@@ -15,7 +15,9 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         // Initialize the appointments query
-        $query = Appointment::where('appointment_date', '>=', now()->startOfDay());
+        $query = Appointment::where('appointment_date', '>=', now()->startOfDay())
+                    ->where('status', 'confirmed');
+
 
         if ($user->role == 'dentist') {
             $appointments = $query->where('dentist_id', $user->id)
