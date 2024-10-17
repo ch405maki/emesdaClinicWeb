@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Appointment;
+use App\Models\DentistAvailability;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,9 +53,11 @@ class AppointmentController extends Controller
     {
         // Get the ID of the currently logged-in user
         $userId = Auth::id();
+        $DentistAvailability = DentistAvailability::with('dentist')
+        ->where('date', '>=', now())
+        ->get();
 
-        // Pass the user ID to the view
-        return Inertia::render('Appointments/Create', ['userId' => $userId]);
+        return Inertia::render('Appointments/Create', ['userId' => $userId, 'availabilities' => $DentistAvailability]);
     }
 
     public function store(Request $request)

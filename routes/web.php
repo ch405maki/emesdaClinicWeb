@@ -60,6 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/appointments/manage', [AppointmentController::class, 'manage'])->name('appointments.manage');
     Route::get('/appointments/view/{id}', [AppointmentController::class, 'view'])->name('appointments.view');
+    
     // Diagnostics
     Route::get('/diagnostic', [DiagnosticController::class, 'index'])->name('diagnostic.index');
     Route::get('/diagnostic/form', [DiagnosticController::class, 'create'])->name('diagnostic.create');

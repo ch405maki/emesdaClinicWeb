@@ -7,45 +7,41 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">Create Appointment</h2>
       </template>
 
-      <div class="py-6">
-        <div class="mx-auto sm:px-6 lg:px-8 ">
-          <!-- Hidden fields for IDs and status -->
-          <div class="mb-4 hidden">
-            <label for="patient_id" class="block text-sm font-medium text-gray-700">Patient ID</label>
-            <input
-              type="text"
-              id="patient_id"
-              v-model="form.patient_id"
-              readonly
-              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100"
-            />
+      <div class="calendar-container max-w-4xl mx-auto grid grid-cols-7 gap-2 sm:gap-4 p-8">
+        <!-- Calendar Header -->
+        <div class="col-span-7 text-center font-bold text-lg mb-4">October 2024</div>
+
+        <!-- Days of the Week -->
+        <div v-for="day in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']" :key="day" class="font-semibold text-center text-xs sm:text-sm">
+          {{ day }}
+        </div>
+
+        <!-- Calendar Days -->
+        <div
+          v-for="day in daysInMonth"
+          :key="day"
+          class="p-2 border border-gray-300 rounded-lg flex flex-col items-center justify-center"
+        >
+          <div class="text-lg font-bold mb-1">{{ day }}</div>
+
+          <!-- Availability Indicator -->
+          <div v-if="getAvailabilityForDay(day).length" class="bg-green-200 text-green-800 text-xs sm:text-sm p-1 rounded-full mt-2">
+            Available
           </div>
-          <div class="mb-4 hidden">
-            <label for="dentist_id" class="block text-sm font-medium text-gray-700">Dentist ID</label>
-            <input
-              type="text"
-              id="dentist_id"
-              v-model="form.dentist_id"
-              required
-              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-            />
-          </div>
-          <div class="mb-4 hidden">
-            <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-            <select
-              id="status"
-              v-model="form.status"
-              required
-              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-            >
-              <option value="pending">Pending</option>
-              <option value="confirmed">Confirmed</option>
-              <option value="completed">Completed</option>
-              <option value="canceled">Canceled</option>
-            </select>
+          <div v-else class="bg-red-200 text-red-800 text-xs sm:text-sm p-1 rounded-full mt-2">
+            No Slots
           </div>
 
-          <!-- Card for Dental History -->
+          <!-- Time Slots Display -->
+          <div v-for="availability in getAvailabilityForDay(day)" :key="availability.id" class="mt-2 text-xs text-center font-semibold">
+            {{ formatTime(availability.start_time) }} - {{ formatTime(availability.end_time) }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Section -->
+      <div class="py-6">
+        <div class="mx-auto sm:px-6 lg:px-8">
           <div class="bg-white shadow-md rounded-lg p-6 mb-6">
             <h3 class="text-lg font-semibold mb-4">Set Appointment Date</h3>
             <div class="mb-4">
@@ -59,7 +55,6 @@
               />
               <p class="mt-2 text-sm text-gray-500">Selected Date and Time: {{ formattedAppointmentDate }}</p>
             </div>
-            <!-- Submit Button -->
             <div class="flex justify-center items-center">
               <button
                 type="submit"
@@ -86,12 +81,36 @@ import axios from 'axios';
 const page = usePage();
 const userId = page.props.userId;
 
+const props = defineProps({
+  availabilities: {
+    type: Array,
+    required: true
+  }
+});
+
 const form = ref({
   patient_id: userId,
   dentist_id: '2',
   appointment_date: '',
   status: 'pending',
 });
+
+const daysInMonth = Array.from({ length: 31 }, (_, i) => i + 1);
+const getAvailabilityForDay = (day) => {
+  return props.availabilities.filter(availability => {
+    const availabilityDate = new Date(availability.date).getDate();
+    return availabilityDate === day;
+  });
+};
+
+// Function to format time to 12-hour format
+const formatTime = (time) => {
+  const [hour, minute] = time.split(':');
+  const hours = parseInt(hour, 10);
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const formattedHour = hours % 12 || 12;
+  return `${formattedHour}:${minute} ${ampm}`;
+};
 
 const formattedAppointmentDate = computed(() => {
   if (!form.value.appointment_date) return '';
@@ -111,7 +130,6 @@ const formattedAppointmentDate = computed(() => {
 
 const handleSubmit = async () => {
   try {
-    // Ensure the date is in the correct format before sending it to the server
     const formattedDate = new Date(form.value.appointment_date).toISOString();
     const formData = { ...form.value, appointment_date: formattedDate };
 
@@ -125,7 +143,6 @@ const handleSubmit = async () => {
       router.visit(route('dashboard'));
     });
 
-    // Reset the form after successful submission
     form.value = {
       patient_id: userId,
       dentist_id: '2',
@@ -142,3 +159,16 @@ const handleSubmit = async () => {
   }
 };
 </script>
+
+<style scoped>
+.calendar-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+@media (max-width: 640px) {
+  .calendar-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+</style>
