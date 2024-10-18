@@ -182,32 +182,38 @@
               <!-- dental chart here -->
               <!-- Upper Teeth Section -->
               <div class="dental-chart">
-                <div class="row">
-                  <label class="row-label text-blue-700">Operation:</label>
-                  <div v-for="tooth in teeth_upper" :key="tooth" class="tooth-box">
+                <div class="flex flex-wrap items-center mb-4">
+                  <label class="font-medium text-blue-700 w-full mb-2">Operation:</label>
+                  <div v-for="tooth in teethmiddleup" :key="tooth" class="flex items-center mr-4 mb-2">
                     <input 
-                      type="text" 
-                      class="tooth-input" 
-                      maxlength="3"
-                      @input="validateInput($event, 'Upper Operation', tooth)"
+                      type="checkbox" 
+                      class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500" 
+                      :value="1" 
+                      v-model="dentalChartData['Upper Operation'][tooth]" 
                     />
+                    <span class="ml-2 text-gray-800">Tooth {{ tooth }}</span>
                   </div>
                 </div>
-                <div class="row">
-                  <label class="row-label text-red-700">Condition:</label>
-                  <div v-for="tooth in teeth_upper" :key="tooth" class="tooth-box">
-                    <input 
-                      type="text" 
-                      class="tooth-input" 
-                      maxlength="3"
-                      @input="validateInput($event, 'Upper Condition', tooth)"
-                    />
+                <div class="image-section mb-4 ">
+                  <img src="/images/chart/upper.png" alt="Upper Teeth Chart" class="chart-image-sub ml-[8%]" />
+                </div>
+                <!-- Lower Teeth Section -->
+                <div class="dental-chart">
+                  <div class="row">
+                    <label class="row-label text-blue-700">Operation:</label>
+                    <div v-for="tooth in teeth_bottom" :key="tooth" class="tooth-box">
+                      <input 
+                        type="text" 
+                        class="tooth-input" 
+                        maxlength="3"
+                        @input="validateInput($event, 'Lower Operation', tooth)"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              <div class="image-section mb-8">
-                <img src="/images/chart/upper.png" alt="Upper Teeth Chart" class="chart-image-sub ml-[8%]" />
+                <div class="image-section mt-2">
+                  <img src="/images/chart/lower.png" alt="Lower Teeth Chart" class="chart-image-sub ml-[8%]" />
+                </div>
               </div>
 
               <!-- Middle Teeth Section -->
@@ -220,17 +226,6 @@
                       class="tooth-input" 
                       maxlength="3"
                       @input="validateInput($event, 'Middle Operation', tooth)"
-                    />
-                  </div>
-                </div>
-                <div class="row">
-                  <label class="row-label text-red-700">Condition:</label>
-                  <div v-for="tooth in teethmiddleup" :key="tooth" class="tooth-box">
-                    <input 
-                      type="text" 
-                      class="tooth-input" 
-                      maxlength="3"
-                      @input="validateInput($event, 'Middle Condition', tooth)"
                     />
                   </div>
                 </div>
@@ -253,48 +248,8 @@
                     />
                   </div>
                 </div>
-                <div class="row">
-                  <label class="row-label text-red-700">Condition:</label>
-                  <div v-for="tooth in teethmiddledown" :key="tooth" class="tooth-box">
-                    <input 
-                      type="text" 
-                      class="tooth-input" 
-                      maxlength="3"
-                      @input="validateInput($event, 'Middle Bottom Condition', tooth)"
-                    />
-                  </div>
-                </div>
               </div>
 
-              <div class="image-section mt-8">
-                <img src="/images/chart/lower.png" alt="Lower Teeth Chart" class="chart-image-sub ml-[8%]" />
-              </div>
-
-              <!-- Lower Teeth Section -->
-              <div class="dental-chart">
-                <div class="row">
-                  <label class="row-label text-blue-700">Operation:</label>
-                  <div v-for="tooth in teeth_bottom" :key="tooth" class="tooth-box">
-                    <input 
-                      type="text" 
-                      class="tooth-input" 
-                      maxlength="3"
-                      @input="validateInput($event, 'Lower Operation', tooth)"
-                    />
-                  </div>
-                </div>
-                <div class="row">
-                  <label class="row-label text-red-700">Condition:</label>
-                  <div v-for="tooth in teeth_bottom" :key="tooth" class="tooth-box">
-                    <input 
-                      type="text" 
-                      class="tooth-input" 
-                      maxlength="3"
-                      @input="validateInput($event, 'Lower Condition', tooth)"
-                    />
-                  </div>
-                </div>
-              </div>
               <!-- end dental chart here -->
 
               <!-- Submit button -->
@@ -379,11 +334,9 @@ const form = ref({
   remarks: '',
   service_rendered: '',
   dental_chart: '',
-  description: '',
-  service_rendered: '',
-  remarks: '',
   status: props.appointment.status
 });
+
 
 // Function to handle form submission
 async function submitForm() {
@@ -396,6 +349,7 @@ async function submitForm() {
       remarks: form.value.remarks,
       dental_chart: dentalChartData
     });
+    
 
     // Update the appointment status immediately after creating the diagnostic
     console.log('Starting appointment status update...');
@@ -406,13 +360,31 @@ async function submitForm() {
     console.log('Appointment status updated successfully.');
 
     // Create the diagnostic
-    await Inertia.post('/diagnostic/store', {
-      appointment_id: form.value.appointment_id,
-      description: form.value.description,
-      service_rendered: form.value.service_rendered,
-      remarks: form.value.remarks,
-      dental_chart: dentalChartData
-    });
+    // Create the diagnostic
+await Inertia.post('/diagnostic/store', {
+  appointment_id: form.value.appointment_id,
+  occlusion: form.value.occlusion,
+  condition: form.value.condition,
+  hygiene: form.value.hygiene,
+  denture_upper: form.value.denture_upper,
+  denture_lower: form.value.denture_lower,
+  since_upper: form.value.since_upper,
+  since_lower: form.value.since_lower,
+  abnormalities: form.value.abnormalities,
+  general_condition: form.value.general_condition,
+  physician: form.value.physician,
+  nature_treatment: form.value.nature_treatment,
+  alergies: form.value.alergies,
+  history: form.value.history,
+  ailments: form.value.ailments,
+  bp: form.value.bp,
+  drugs: form.value.drugs,
+  description: form.value.description,
+  remarks: form.value.remarks,
+  service_rendered: form.value.service_rendered,
+  dental_chart: dentalChartData, // Assuming this is populated separately
+  status: form.value.status
+});
 
     console.log('Diagnostic created successfully.');
 

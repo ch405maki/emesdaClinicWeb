@@ -23,7 +23,15 @@ class AppointmentController extends Controller
         $appointments = Appointment::where('status', 'pending')->get();
         return inertia('Appointments/Manage', ['appointments' => $appointments]);
     }
-    
+
+    public function myAppointments()
+    {
+        $userId = Auth::id();
+
+        $appointments = Appointment::where('patient_id', $userId)->get();
+
+        return inertia('Appointments/MyAppointments', ['appointments' => $appointments]);
+    }
 
     public function show($id)
     {
@@ -74,7 +82,7 @@ class AppointmentController extends Controller
         Appointment::create($validated);
 
         // Return a success response
-        return redirect()->route('dashboard')->with('success', 'Appointment created successfully.');
+        return redirect()->route('appointments.my-appointments')->with('success', 'Appointment created successfully.');
     }
 
 

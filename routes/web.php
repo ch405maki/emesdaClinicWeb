@@ -14,7 +14,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DentistAvailabilityController;
 
-use App\Http\Controllers\SmsController;
+// use App\Http\Controllers\SmsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/appointments/manage', [AppointmentController::class, 'manage'])->name('appointments.manage');
+Route::get('/appointments/my-appointments', [AppointmentController::class, 'myAppointments'])->name('appointments.my-appointments');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Appointments
@@ -61,6 +62,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/appointments/manage', [AppointmentController::class, 'manage'])->name('appointments.manage');
     Route::get('/appointments/view/{id}', [AppointmentController::class, 'view'])->name('appointments.view');
+    
     
     // Diagnostics
     Route::get('/diagnostic', [DiagnosticController::class, 'index'])->name('diagnostic.index');
@@ -83,7 +85,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 
-Route::match(['get', 'post'], '/send-sms', [SmsController::class, 'sendSms'])->name('sms.send');
+// Route::match(['get', 'post'], '/send-sms', [SmsController::class, 'sendSms'])->name('sms.send');
 
 
 Route::get('/download-apk', function () {

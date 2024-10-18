@@ -69,16 +69,15 @@
           <!-- Mobile Menu -->
           <nav v-if="isMenuOpen" class="lg:hidden" aria-label="Global" @click.away="isMenuOpen = false">
             <div class="mx-auto max-w-3xl space-y-1 px-2 pt-2 pb-3 sm:px-4">
-              <a href="#" class="bg-gray-100 text-gray-900 block rounded-md py-2 px-3 text-base font-medium">Home</a>
-              <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Item</a>
-              <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Item</a>
-              <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Item</a>
+              <a :href="route('dashboard')" class="bg-gray-100 text-gray-900 block rounded-md py-2 px-3 text-base font-medium">Home</a>
+              <a :href="route('appointments.create')" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">New Appointment</a>
+              <a :href="route('appointments.my-appointments')" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">My Appointments</a>
+              <a :href="route('reports.index')" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">My Records</a>
             </div>
             <div class="border-t border-gray-200 pt-4">
               <div class="mx-auto max-w-3xl space-y-1 px-4">
-                <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Profile</a>
-                <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Item</a>
-                <a href="#" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Sign out</a>
+                <a :href="route('profile.edit')" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Profile</a>
+                <a :href="route('logout')" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Sign out</a>
               </div>
             </div>
           </nav>
@@ -110,7 +109,15 @@
                       <path d="M12 4.5c-3.172 0-5.75 2.578-5.75 5.75S8.828 16 12 16s5.75-2.578 5.75-5.75S15.172 4.5 12 4.5zM12 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
                       <path d="M12 2.25a9.75 9.75 0 0 1 0 19.5m0-19.5a9.75 9.75 0 0 0 0 19.5" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
                     </svg>
-                    <span class="truncate">New Appointments</span>
+                    <span class="truncate">New Appointment</span>
+                  </a>
+
+                  <a :href="route('appointments.my-appointments')" class="text-gray-700 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md" x-state-description="undefined: &quot;bg-gray-200 text-gray-900&quot;, undefined: &quot;text-gray-700 hover:bg-gray-50&quot;">
+                    <svg class="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                      <path d="M12 4.5c-3.172 0-5.75 2.578-5.75 5.75S8.828 16 12 16s5.75-2.578 5.75-5.75S15.172 4.5 12 4.5zM12 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                      <path d="M12 2.25a9.75 9.75 0 0 1 0 19.5m0-19.5a9.75 9.75 0 0 0 0 19.5" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
+                    </svg>
+                    <span class="truncate">My Appointments</span>
                   </a>
                 
                   <a :href="route('appointments.manage')" class="text-gray-700 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md" x-state-description="undefined: &quot;bg-gray-200 text-gray-900&quot;, undefined: &quot;text-gray-700 hover:bg-gray-50&quot;">

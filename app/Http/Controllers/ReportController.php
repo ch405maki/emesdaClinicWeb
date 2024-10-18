@@ -52,7 +52,7 @@ class ReportController extends Controller
         // Return Inertia response with the appointment, latest diagnostic data, and user role
         return Inertia::render('Reports/Show', [
             'appointment' => $appointment,
-            'latestDiagnostic' => $latestDiagnostic,
+            'diagnostic' => $latestDiagnostic,
             'userRole' => $userRole
         ]);
     }

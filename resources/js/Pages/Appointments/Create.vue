@@ -4,66 +4,67 @@
 
     <AuthenticatedLayout>
       <template #header>
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Create Appointment</h2>
+        <div class="flex justify-between items-center">
+          <h2 class="font-semibold text-xl text-gray-800 leading-tight">Create Appointment</h2>
+          <button 
+            class="bg-blue-500 text-white font-bold py-2 px-4 rounded" 
+            @click="openModal">
+            Add Appointment
+          </button>
+        </div>
       </template>
 
-      <div class="calendar-container max-w-4xl mx-auto grid grid-cols-7 gap-2 sm:gap-4 p-8">
-        <!-- Calendar Header -->
-        <div class="col-span-7 text-center font-bold text-lg mb-4">October 2024</div>
-
-        <!-- Days of the Week -->
-        <div v-for="day in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']" :key="day" class="font-semibold text-center text-xs sm:text-sm">
-          {{ day }}
-        </div>
-
-        <!-- Calendar Days -->
-        <div
-          v-for="day in daysInMonth"
-          :key="day"
-          class="p-2 border border-gray-300 rounded-lg flex flex-col items-center justify-center"
-        >
-          <div class="text-lg font-bold mb-1">{{ day }}</div>
-
-          <!-- Availability Indicator -->
-          <div v-if="getAvailabilityForDay(day).length" class="bg-green-200 text-green-800 text-xs sm:text-sm p-1 rounded-full mt-2">
-            Available
-          </div>
-          <div v-else class="bg-red-200 text-red-800 text-xs sm:text-sm p-1 rounded-full mt-2">
-            No Slots
-          </div>
-
-          <!-- Time Slots Display -->
-          <div v-for="availability in getAvailabilityForDay(day)" :key="availability.id" class="mt-2 text-xs text-center font-semibold">
-            {{ formatTime(availability.start_time) }} - {{ formatTime(availability.end_time) }}
-          </div>
-        </div>
+      <div class="bg-white my-8 mx-8 rounded shadow p-8">
+        <!-- FullCalendar component with options -->
+        <FullCalendar 
+          class="w-full"
+          :options="calendarOptions"
+        />
       </div>
 
-      <!-- Form Section -->
-      <div class="py-6">
-        <div class="mx-auto sm:px-6 lg:px-8">
-          <div class="bg-white shadow-md rounded-lg p-6 mb-6">
-            <h3 class="text-lg font-semibold mb-4">Set Appointment Date</h3>
-            <div class="mb-4">
-              <label for="appointment_date" class="block text-sm font-medium text-gray-700">Appointment Date</label>
-              <input
-                type="datetime-local"
-                id="appointment_date"
-                v-model="form.appointment_date"
-                required
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-              />
-              <p class="mt-2 text-sm text-gray-500">Selected Date and Time: {{ formattedAppointmentDate }}</p>
-            </div>
-            <div class="flex justify-center items-center">
-              <button
-                type="submit"
-                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-                @click="handleSubmit"
-              >
-                Create Appointment
-              </button>
-            </div>
+      <!-- Modal for Appointment Form -->
+      <div v-if="isModalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <div class="bg-white shadow-md rounded-lg p-6 max-w-lg w-full">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold">Set Appointment Date</h3>
+            <button 
+              @click="closeModal" 
+              class="bg-red-500 text-white font-bold w-8 h-8 rounded-full flex items-center justify-center hover:bg-red-600">
+              &times;
+            </button>
+          </div>
+          <div class="mb-4">
+          <label for="appointment_date" class="block text-sm font-medium text-gray-700">Appointment Date</label>
+          <input
+              type="datetime-local"
+              id="appointment_date"
+              v-model="form.appointment_date"
+              required
+              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+          />
+          <p class="mt-2 text-sm text-gray-500">Selected Date: {{ formattedAppointmentDate }}</p>
+      </div>
+
+          <div class="mb-4 flex justify-center">
+              <div class="text-center">
+                  <label class="block text-sm font-medium text-gray-700">Start Time</label>
+                  <p class="mt-1 text-gray-800">{{ form.start_time }}</p>
+              </div>
+              
+              <div class="mx-6 text-center"> <!-- Added margin for spacing -->
+                  <label class="block text-sm font-medium text-gray-700">End Time</label>
+                  <p class="mt-1 text-gray-800">{{ form.end_time }}</p>
+              </div>
+          </div>
+
+          <div class="flex justify-center items-center">
+            <button
+              type="submit"
+              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+              @click="handleSubmit"
+            >
+              Create Appointment
+            </button>
           </div>
         </div>
       </div>
@@ -77,6 +78,9 @@ import { Head, router, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import FullCalendar from '@fullcalendar/vue3';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
 
 const page = usePage();
 const userId = page.props.userId;
@@ -95,22 +99,36 @@ const form = ref({
   status: 'pending',
 });
 
-const daysInMonth = Array.from({ length: 31 }, (_, i) => i + 1);
-const getAvailabilityForDay = (day) => {
-  return props.availabilities.filter(availability => {
-    const availabilityDate = new Date(availability.date).getDate();
-    return availabilityDate === day;
-  });
+const isModalOpen = ref(false);
+const openModal = () => {
+  isModalOpen.value = true;
+};
+const closeModal = () => {
+  isModalOpen.value = false;
 };
 
-// Function to format time to 12-hour format
-const formatTime = (time) => {
-  const [hour, minute] = time.split(':');
-  const hours = parseInt(hour, 10);
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  const formattedHour = hours % 12 || 12;
-  return `${formattedHour}:${minute} ${ampm}`;
+const handleDateClick = (info) => {
+    form.value.appointment_date = info.dateStr; // The selected date
+    const startDate = new Date(info.dateStr); // Create a Date object
+    startDate.setHours(8, 33); // Set start time to 08:33 AM
+    const endDate = new Date(info.dateStr); // Create another Date object
+    endDate.setHours(20, 33); // Set end time to 08:33 PM
+
+    form.value.start_time = startDate.toTimeString().split(' ')[0].substring(0, 5); // Format HH:mm
+    form.value.end_time = endDate.toTimeString().split(' ')[0].substring(0, 5); // Format HH:mm
+    openModal();
 };
+
+
+const formatTime = (time) => {
+    const date = new Date(time); // Create a date object from the provided time
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHour = hours % 12 || 12; // Convert to 12-hour format
+    return `${formattedHour}:${minutes.toString().padStart(2, '0')} ${ampm}`; // Ensures two digits for minutes
+};
+
 
 const formattedAppointmentDate = computed(() => {
   if (!form.value.appointment_date) return '';
@@ -120,13 +138,40 @@ const formattedAppointmentDate = computed(() => {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
-    hour: '2-digit',
+    hour: 'numeric',
     minute: '2-digit',
-    hour12: true
+    hour12: true // Ensures that the time is in 12-hour format with AM/PM
   };
 
   return date.toLocaleString('en-US', options);
 });
+
+const calendarOptions = {
+    initialView: 'dayGridMonth',
+    plugins: [dayGridPlugin, interactionPlugin],
+    events: props.availabilities.map(availability => ({
+        id: availability.id,
+        start: `${availability.date}T${availability.start_time}`, // Ensure this is correct
+        end: `${availability.date}T${availability.end_time}`,     // Ensure this is correct
+        backgroundColor: '#28a745', // Set a background color for the event
+        borderColor: '#28a745',
+    })),
+    dateClick: handleDateClick,
+    eventContent: (arg) => {
+    const startTime = formatTime(arg.event.start);
+    const endTime = formatTime(arg.event.end);
+
+    return {
+      html: `
+        <div class="fc-event-content">
+          <div class="fc-event-time">${startTime}</div>
+          <div class="fc-event-title">${endTime}</div>
+          <div class="active-indicator" style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #28a745; margin-left: 5px;"></div>
+        </div>
+      `
+    };
+  }
+};
 
 const handleSubmit = async () => {
   try {
@@ -140,7 +185,7 @@ const handleSubmit = async () => {
       text: 'The appointment has been created successfully.',
       confirmButtonText: 'OK'
     }).then(() => {
-      router.visit(route('dashboard'));
+      router.visit(route('appointments.my-appointments'));
     });
 
     form.value = {
@@ -149,6 +194,7 @@ const handleSubmit = async () => {
       appointment_date: '',
       status: 'pending',
     };
+    closeModal();
   } catch (error) {
     Swal.fire({
       icon: 'error',
@@ -161,14 +207,56 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-.calendar-container {
-  max-width: 100%;
-  overflow-x: auto;
+.fixed {
+  position: fixed;
 }
 
+.inset-0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.fc-event-content {
+  display: flex;
+  align-items: center;
+}
+
+.fc-event-time,
+.fc-event-title {
+  font-size: 1rem; /* Base font size */
+  line-height: 1.2; /* Line height for better spacing */
+}
+
+/* Responsive adjustments */
 @media (max-width: 640px) {
-  .calendar-container {
-    grid-template-columns: repeat(2, 1fr);
+  .fc-event-time,
+  .fc-event-title {
+    font-size: 0.875rem; /* Smaller font size for mobile devices */
   }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .fc-event-time,
+  .fc-event-title {
+    font-size: 1rem; /* Medium font size for tablets */
+  }
+}
+
+@media (min-width: 1025px) {
+  .fc-event-time,
+  .fc-event-title {
+    font-size: 1.125rem; /* Larger font size for desktops */
+  }
+}
+
+/* Active indicator styles */
+.active-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #28a745; /* Green color for the indicator */
+  margin-left: 5px;
 }
 </style>
