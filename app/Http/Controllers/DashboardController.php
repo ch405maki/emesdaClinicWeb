@@ -20,15 +20,24 @@ class DashboardController extends Controller
 
 
         if ($user->role == 'dentist') {
-            $appointments = $query->where('dentist_id', $user->id)
-                                  ->with(['patient', 'diagnostic'])
-                                  ->orderBy('appointment_date', 'asc')
-                                  ->get();
+            $request = Appointment::
+                        where('status', 'pending')
+                        ->where('appointment_date', '>=', now()->startOfDay())
+                        ->get();
+            $appointments = Appointment::
+                            where('appointment_date', '>=', now()->startOfDay())
+                            ->where('status', 'confirmed')->get();
         } elseif ($user->role == 'patient') {
-            $appointments = $query->where('patient_id', $user->id)
-                                  ->with(['dentist', 'diagnostic'])
-                                  ->orderBy('appointment_date', 'asc')
-                                  ->get();
+            $request = Appointment::
+                        where('patient_id', $user->id)
+                        ->where('status', 'pending')
+                        ->where('appointment_date', '>=', now()->startOfDay())
+                        ->get();
+            $appointments = Appointment::where('patient_id', $user->id)
+                                ->where('appointment_date', '>=', now()->startOfDay())
+                                ->with(['dentist', 'diagnostic'])
+                                ->orderBy('appointment_date', 'asc')
+                                ->get();
         } else {
             // If the user role is neither dentist nor student, return an empty collection
             $appointments = collect();
@@ -37,7 +46,8 @@ class DashboardController extends Controller
         // Return the view with the fetched data
         return Inertia::render('Dashboard', [
             'appointments' => $appointments,
-            'role' => $user->role, // Pass the role to the front end
+            'role' => $user->role,
+            'request' => $request,
         ]);
     }
 }

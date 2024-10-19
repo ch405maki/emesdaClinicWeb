@@ -88,7 +88,7 @@
             <nav aria-label="Sidebar" class="sticky top-4 divide-y divide-gray-300">
               <div class="space-y-1 pb-8">
                 
-                  <a :href="route('dashboard')" class="bg-gray-200 text-gray-900 group flex items-center px-3 py-2 text-sm font-medium rounded-md" aria-current="page" x-state:on="Current" x-state:off="Default" x-state-description="Current: &quot;bg-gray-200 text-gray-900&quot;, Default: &quot;text-gray-700 hover:bg-gray-50&quot;">
+                  <a :href="route('dashboard')" class="text-gray-900 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md" aria-current="page" x-state:on="Current" x-state:off="Default" x-state-description="Current: &quot;bg-gray-200 text-gray-900&quot;, Default: &quot;text-gray-700 hover:bg-gray-50&quot;">
                     <svg class="text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" x-description="Heroicon name: outline/home" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path>
                     </svg>
@@ -102,8 +102,7 @@
                     </svg>
                     <span class="truncate">Appointments</span>
                   </a>
-
-                
+                  <!-- 
                   <a :href="route('appointments.create')" class="text-gray-700 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md" x-state-description="undefined: &quot;bg-gray-200 text-gray-900&quot;, undefined: &quot;text-gray-700 hover:bg-gray-50&quot;">
                     <svg class="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                       <path d="M12 4.5c-3.172 0-5.75 2.578-5.75 5.75S8.828 16 12 16s5.75-2.578 5.75-5.75S15.172 4.5 12 4.5zM12 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
@@ -118,22 +117,22 @@
                       <path d="M12 2.25a9.75 9.75 0 0 1 0 19.5m0-19.5a9.75 9.75 0 0 0 0 19.5" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
                     </svg>
                     <span class="truncate">My Appointments</span>
-                  </a>
+                  </a> -->
                 
                   <a :href="route('appointments.manage')" class="text-gray-700 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md" x-state-description="undefined: &quot;bg-gray-200 text-gray-900&quot;, undefined: &quot;text-gray-700 hover:bg-gray-50&quot;">
-                    <svg class="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" x-description="Heroicon name: outline/arrow-trending-up" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"></path>
-                    </svg>
-                    <span class="truncate">Manage Appointments</span> 
+                      <svg class="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8.25c-2.1 0-3.75 1.65-3.75 3.75s1.65 3.75 3.75 3.75 3.75-1.65 3.75-3.75-1.65-3.75-3.75-3.75zM21 11.25h-1.477c-.45-1.72-1.48-3.23-2.827-4.227l.942-.942a.75.75 0 00-1.06-1.06l-.942.942a8.968 8.968 0 00-4.227-2.827V3a.75.75 0 00-1.5 0v1.477c-1.72.45-3.23 1.48-4.227 2.827l-.942-.942a.75.75 0 00-1.06 1.06l.942.942a8.968 8.968 0 00-2.827 4.227H3a.75.75 0 000 1.5h1.477c.45 1.72 1.48 3.23 2.827 4.227l-.942.942a.75.75 0 101.06 1.06l.942-.942a8.968 8.968 0 004.227 2.827V21a.75.75 0 001.5 0v-1.477a8.968 8.968 0 004.227-2.827l.942.942a.75.75 0 001.06-1.06l-.942-.942a8.968 8.968 0 002.827-4.227H21a.75.75 0 000-1.5z"></path>
+                      </svg>
+                      <span class="truncate">Manage</span> 
                   </a>
                   
                   <a :href="route('reports.index')" class="text-gray-700 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md" x-state-description="undefined: &quot;bg-gray-200 text-gray-900&quot;, undefined: &quot;text-gray-700 hover:bg-gray-50&quot;">
-                    <svg class="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" x-description="Heroicon name: outline/arrow-trending-up" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"></path>
+                    <svg class="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 2.25h9l3.75 3.75V20.25A1.5 1.5 0 0117.25 21.75H6.75A1.5 1.5 0 015.25 20.25V3.75A1.5 1.5 0 016.75 2.25zM14.25 2.25v4.5h4.5M8.25 11.25h7.5M8.25 15.75h7.5M8.25 7.5h1.5"></path>
                     </svg>
                     <span class="truncate">Patients Record</span>
-                  </a>
-                
+                </a>
+
               </div>
               <div class="pt-10">
                 <p class="px-3 text-sm font-medium text-gray-500" id="communities-headline">Settings</p>
@@ -149,7 +148,7 @@
             </nav>
           </div>
           <main class="lg:col-span-9 xl:col-span-10">
-            <header v-if="$slots.header" class="mx-8">
+            <header v-if="$slots.header" class="mx-4">
             <div class="max-w-7xl mx-auto py-6 px-4 mx-10 sm:px-6 lg:px-8 rounded-lg bg-white shadow">
             <slot name="header" />
             </div>

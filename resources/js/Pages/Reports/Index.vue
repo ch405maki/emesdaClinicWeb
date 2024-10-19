@@ -16,7 +16,7 @@
         </template>
 
         <div class="py-6">
-            <div class="mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="mx-auto px-4 space-y-6">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 rounded-lg">
             <div class="overflow-x-auto">
                 <table class="table-auto w-full">

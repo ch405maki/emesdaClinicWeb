@@ -7,7 +7,7 @@
       </template>
   
       <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+        <div class="max-w-7xl mx-auto px-4 space-y-6">
           <!-- Dashboard Cards -->
           <v-row align="center" justify="center" class="p-0" dense>
             <!-- Main Cards -->
@@ -16,20 +16,32 @@
                 <!-- Card 1: Appointments -->
                 <v-col cols="12" md="4">
                   <Link :href="route('reports.index')" class="block no-underline">
-                    <v-card class="mx-auto" title="Appointments" subtitle="View and manage appointments">
+                    <v-card class="mx-auto" title="Appointments Request" subtitle="View and manage appointments">
                       <template v-slot:prepend>
                         <v-avatar size="40" color="green" class="gradient-border">
                           <v-icon color="white" icon="mdi-calendar-clock"></v-icon>
                         </v-avatar>
                       </template>
-                      <v-card-text>
-                        <div v-if="appointments && appointments.length">
-                          <p class="text-2xl font-bold text-green-600 mt-2">
-                            Total Appointments: {{ appointments.length }}
+                        <v-card-text class="text-center">
+                        <div v-if="request && request.length">
+                          <p class="text-xl font-bold text-violet-800 mt-2">
+                            Appointment Request: {{ request.length }}
                           </p>
                         </div>
                         <div v-else>
-                          No appointments found.
+                          No Appointment Request at the moment
+                        </div>
+                        <div class="flex justify-center sm:justify-start mb-6 mt-6">
+                        <div v-if="role == 'dentist'">
+                          <a :href="route('appointments.manage')" class="text-slate-800 font-medium text-base border border-green-800 hover:bg-violet-800 hover:text-white rounded-xl px-4 py-2 transition-colors duration-300">
+                            Manage
+                          </a>
+                        </div>
+                        <div v-else>
+                          <a :href="route('appointments.my-appointments')" class="text-slate-800 font-medium text-base border border-green-800 hover:bg-green-800 hover:text-white rounded-xl px-4 py-2 transition-colors duration-300">
+                            View
+                          </a>
+                        </div>
                         </div>
                       </v-card-text>
                     </v-card>
@@ -56,7 +68,7 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                               <tr
-                                v-for="appointment in filteredAppointments"
+                                v-for="appointment in appointments"
                                 :key="appointment.id"
                                 class="border-b border-gray-200 hover:bg-gray-100"
                               >
@@ -74,7 +86,7 @@
                                   </button>
                                 </td>
                               </tr>
-                              <tr v-if="filteredAppointments.length === 0">
+                              <tr v-if="appointments.length === 0">
                                 <td colspan="3" class="px-4 py-2 text-center">No upcoming appointments found.</td>
                               </tr>
                             </tbody>
@@ -100,19 +112,31 @@
   import { usePage, router } from '@inertiajs/vue3';
   import '@mdi/font/css/materialdesignicons.min.css';
   
+  const props = defineProps({
+  appointments: {
+    type: Object,
+    required: true
+  },
+  request: {
+    type: Object,
+    required: true
+  },
+  role: {
+    type: Object,
+    required: true
+  },
+});
+
   // Initialize appointments and search query
-  const appointments = ref([]);
+
   const searchQuery = ref('');
   
   // Get the appointments data from the page props
-  const { props } = usePage();
   
   // Detect screen size to determine column visibility
   const isSmScreen = window.innerWidth < 640; // Adjust breakpoint as per your design
   
-  onMounted(() => {
-    appointments.value = props.appointments || [];
-  });
+
   
   // Computed property to filter appointments based on search query
   const filteredAppointments = computed(() => {
@@ -151,10 +175,11 @@
   <style scoped>
   /* Custom styles for the gradient border */
   .gradient-border {
-    background: linear-gradient(45deg, #4CAF50, #2E7D32);
+    background: linear-gradient(45deg, #8e44ad, #5b2c6f);
     border-radius: 50%;
     padding: 4px; /* Adjust padding as needed */
   }
+
   .gradient-border > .v-avatar__content {
     padding: 8px; /* Adjust padding for icon */
   }

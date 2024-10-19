@@ -14,7 +14,7 @@
         </div>
       </template>
 
-      <div class="bg-white my-8 mx-8 rounded shadow p-8">
+      <div class="bg-white my-8 mx-4 rounded shadow p-8">
         <!-- FullCalendar component with options -->
         <FullCalendar 
           class="w-full"

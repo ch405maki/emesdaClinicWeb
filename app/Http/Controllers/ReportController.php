@@ -14,17 +14,18 @@ class ReportController extends Controller
     {
         // Get the currently authenticated user
         $user = Auth::user();
-
         // Initialize the appointments query
         $query = Appointment::query();
 
         // Check the user's role and adjust the query accordingly
         if ($user->role == 'dentist') {
             // Fetch all appointments for dentists
-            $appointments = Appointment::getAppointmentsWithDiagnostics();
+            $appointments = Appointment::has('diagnostic')->with(['patient', 'dentist', 'diagnostic'])->get();
+
         } elseif ($user->role == 'patient') {
             // Fetch only appointments made by the patient
             $appointments = $query->where('patient_id', $user->id)
+                                ->has('diagnostic')
                                 ->with(['patient', 'dentist', 'diagnostic'])
                                 ->get();
         }

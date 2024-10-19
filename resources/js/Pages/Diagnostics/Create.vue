@@ -162,7 +162,7 @@
               </div>
 
               <!-- Status Dropdown -->
-              <div class="mb-8 max-w-xl">
+              <div class="mb-8 max-w-xl hidden">
                 <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
                 <select
                   id="status"
@@ -182,35 +182,39 @@
               <!-- dental chart here -->
               <!-- Upper Teeth Section -->
               <div class="dental-chart">
+                <!-- Isolate -->
                 <div class="flex flex-wrap items-center mb-4">
                   <label class="font-medium text-blue-700 w-full mb-2">Operation:</label>
-                  <div v-for="tooth in teethmiddleup" :key="tooth" class="flex items-center mr-4 mb-2">
+                  <div v-for="tooth in teeth_upper" :key="tooth" class="flex items-center mr-4 mb-2">
                     <input 
                       type="checkbox" 
-                      class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500" 
+                      class="tooth-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       :value="1" 
                       v-model="dentalChartData['Upper Operation'][tooth]" 
                     />
-                    <span class="ml-2 text-gray-800">Tooth {{ tooth }}</span>
+                    <span class="ml-2 text-gray-800">{{ tooth }}</span>
                   </div>
                 </div>
+                <!-- Isolate -->
                 <div class="image-section mb-4 ">
                   <img src="/images/chart/upper.png" alt="Upper Teeth Chart" class="chart-image-sub ml-[8%]" />
                 </div>
                 <!-- Lower Teeth Section -->
                 <div class="dental-chart">
-                  <div class="row">
-                    <label class="row-label text-blue-700">Operation:</label>
-                    <div v-for="tooth in teeth_bottom" :key="tooth" class="tooth-box">
-                      <input 
-                        type="text" 
-                        class="tooth-input" 
-                        maxlength="3"
-                        @input="validateInput($event, 'Lower Operation', tooth)"
-                      />
-                    </div>
+                <div class="flex flex-wrap items-center mb-4">
+                  <label class="font-medium text-blue-700 w-full mb-2">Operation:</label>
+                  <div v-for="tooth in teeth_bottom" :key="tooth" class="flex items-center mr-4 mb-2">
+                    <input 
+                      type="checkbox" 
+                      class="tooth-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      :value="1" 
+                      v-model="dentalChartData['Lower Operation'][tooth]" 
+                    />
+                    <span class="ml-2 text-gray-800">{{ tooth }}</span>
                   </div>
                 </div>
+              </div>
+
                 <div class="image-section mt-2">
                   <img src="/images/chart/lower.png" alt="Lower Teeth Chart" class="chart-image-sub ml-[8%]" />
                 </div>
@@ -281,8 +285,8 @@ import { reactive } from 'vue';
   // Define arrays for teeth
   const teethmiddleup = Array.from({ length: 16 }, (_, i) => i + 1);
   const teethmiddledown = Array.from({ length: 16 }, (_, i) => i + 1);
-  const teeth_upper = Array.from({ length: 10 }, (_, i) => i + 1);
-  const teeth_bottom = Array.from({ length: 10 }, (_, i) => i + 1);
+  const teeth_upper = [55, 54, 53, 52, 51, 61, 62, 63, 64, 65];
+  const teeth_bottom = [85, 84, 83,82, 81, 71, 72, 73, 74, 75];
 // Define props
 const props = defineProps({
   appointment: {
@@ -290,6 +294,7 @@ const props = defineProps({
     required: true
   }
 });
+
 
 // Reactive data structure to store inputs
 const dentalChartData = reactive({
@@ -448,8 +453,8 @@ function formattedDate(dateString) {
 }
 
 .tooth-input {
-  width: 40px;   /* Increased width */
-  height: 40px;  /* Increased height */
+  width: 20px;   /* Increased width */
+  height: 20px;  /* Increased height */
   text-align: center;
   border: 1px solid #ccc;
   border-radius: 4px;
