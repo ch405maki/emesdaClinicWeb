@@ -98,7 +98,7 @@
               </div>
                 
               <div class="border-t border-gray-200 px-4 py-2">
-                <div class="grid grid-cols-2 md:grid-cols-1 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
                 <div>
                   <p class="text-sm font-medium text-gray-600">
                     Occlusion: <span class="text-gray-800">{{ diagnostic.occlusion }}</span>
@@ -144,35 +144,45 @@
                   </p>
                 </div>
                 <div>
-                  <div class="dental-chart">
-        <div class="row">
-          <label class="text-blue-700 mb-4">Operation:</label>
-          <div v-for="(value, tooth) in dentalChart['Upper Operation']" :key="tooth" style="display: flex; align-items: center;">
-            <input 
-              style="
-                width: 30px;
-                height: 40px;
-                text-align: center;
-                border: 1px solid #ccc;
-                border-radius: 1px;
-                font-size: 8px;
-                margin: 0;
-                padding: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              "
-              type="text" 
-              maxlength="3"
-              :value="value ? '✓' : ''" 
-              readonly
-            />
-                  </div>
-                  </div>
+                  {{ diagnostic.dental_chart }}
                 </div>
                 </div>
 
+                <!-- Chart Section -->
+                <div class="dental-chart">
+                <div class="row">
+                  <label class="row-label text-blue-700">Upper Operation:</label>
+                  <div v-for="tooth in teethUpper" :key="tooth" class="flex items-center mb-2">
+                    <input 
+                      type="checkbox" 
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      :value="tooth" 
+                      :checked="dentalChart['Upper Operation'] && dentalChart['Upper Operation'][tooth] === true"
+                      disabled
+                    />
+                    <span class="ml-2 text-gray-800">{{ tooth }}</span>
+                  </div>
                 </div>
+              </div>
+                <div class="dental-chart">
+                <div class="row">
+                  <label class="row-label text-blue-700">Lower Operation:</label>
+                  <div v-for="tooth in teethBottom" :key="tooth" class="flex items-center mb-2">
+                    <input 
+                      type="checkbox" 
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      :value="tooth" 
+                      :checked="dentalChart['Lower Operation'] && dentalChart['Lower Operation'][tooth] === true"
+                      disabled
+                    />
+                    <span class="ml-2 text-gray-800">{{ tooth }}</span>
+                  </div>
+                </div>
+              </div>
+
+
+
+                <!-- Chart Section -->
 
                 <div class="border-t border-gray-200 px-4 py-2 mt-8">
                   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -229,33 +239,37 @@ const props = defineProps({
 const dentalChart = ref({});
 
 // Initialize teeth arrays
-const teethUpper = Array.from({ length: 10 }, (_, i) => (i + 1).toString());
+const teethUpper = [55, 54, 53, 52, 51, 61, 62, 63, 64, 65];
+const teethBottom = [85, 84, 83,82, 81, 71, 72, 73, 74, 75];
 const teethMiddleUp = Array.from({ length: 16 }, (_, i) => (i + 1).toString());
 const teethMiddleDown = Array.from({ length: 16 }, (_, i) => (i + 1).toString());
-const teethBottom = Array.from({ length: 10 }, (_, i) => (i + 1).toString());
 
-// Parse dental chart JSON
+
 onMounted(() => {
-  if (props.latestDiagnostic && props.latestDiagnostic.dental_chart) {
+  if (props.diagnostic && props.diagnostic.dental_chart) {
     try {
-      dentalChart.value = JSON.parse(props.latestDiagnostic.dental_chart);
+      dentalChart.value = JSON.parse(props.diagnostic.dental_chart);
     } catch (error) {
       console.error('Error parsing dental_chart:', error);
     }
+  } else {
+    // Initialize with default values if diagnostic data is not available
+    dentalChart.value = {
+      'Upper Operation': [],
+      'Lower Operation': [],
+    };
   }
 });
 
 
-// Parse dental chart JSON
-onMounted(() => {
-  if (props.latestDiagnostic && props.latestDiagnostic.dental_chart) {
-    try {
-      dentalChart.value = JSON.parse(props.latestDiagnostic.dental_chart);
-    } catch (error) {
-      console.error('Error parsing dental_chart:', error);
-    }
+
+const updateToothStatus = (section, tooth, status) => {
+  if (!dentalChart.value[section]) {
+    dentalChart.value[section] = {};
   }
-});
+  dentalChart.value[section][tooth] = status;
+};
+
 
 // Format date function
 const formattedCreatedAt = computed(() => {

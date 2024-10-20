@@ -20,12 +20,12 @@ class SmsController extends Controller
         $to = '+639971734770';  // Your hardcoded phone number
         $message = 'Hello, this is a test message!';  // Your hardcoded message
 
-        try {
-            $this->twilioService->sendSms($to, $message);
-            return response()->json(['success' => 'SMS sent successfully to ' . $to]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'SMS failed to send: ' . $e->getMessage()], 500);
-        }
+        // try {
+        //     $this->twilioService->sendSms($to, $message);
+        //     return response()->json(['success' => 'SMS sent successfully to ' . $to]);
+        // } catch (\Exception $e) {
+        //     return response()->json(['error' => 'SMS failed to send: ' . $e->getMessage()], 500);
+        // }
     }
 }
 

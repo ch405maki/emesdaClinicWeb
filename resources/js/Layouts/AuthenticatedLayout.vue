@@ -102,7 +102,7 @@
                     </svg>
                     <span class="truncate">Appointments</span>
                   </a>
-                  <!-- 
+                  
                   <a :href="route('appointments.create')" class="text-gray-700 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md" x-state-description="undefined: &quot;bg-gray-200 text-gray-900&quot;, undefined: &quot;text-gray-700 hover:bg-gray-50&quot;">
                     <svg class="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                       <path d="M12 4.5c-3.172 0-5.75 2.578-5.75 5.75S8.828 16 12 16s5.75-2.578 5.75-5.75S15.172 4.5 12 4.5zM12 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
@@ -110,7 +110,7 @@
                     </svg>
                     <span class="truncate">New Appointment</span>
                   </a>
-
+                  <!-- 
                   <a :href="route('appointments.my-appointments')" class="text-gray-700 hover:bg-gray-50 group flex items-center px-3 py-2 text-sm font-medium rounded-md" x-state-description="undefined: &quot;bg-gray-200 text-gray-900&quot;, undefined: &quot;text-gray-700 hover:bg-gray-50&quot;">
                     <svg class="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                       <path d="M12 4.5c-3.172 0-5.75 2.578-5.75 5.75S8.828 16 12 16s5.75-2.578 5.75-5.75S15.172 4.5 12 4.5zM12 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
