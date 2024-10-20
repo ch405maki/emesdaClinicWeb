@@ -9,7 +9,7 @@
 
       <!-- Main content area -->
       <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4">
           <div class="bg-white shadow overflow-hidden sm:rounded-lg p-6 space-y-6">
 
             <!-- Appointment details section -->
@@ -25,8 +25,8 @@
 
             <!-- Diagnostic form -->
             <form @submit.prevent="submitForm" class="space-y-4">
-
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div v-if="step === 1">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                <!-- Occlusion -->
               <div>
                 <label for="occlusion" class="block text-sm font-medium text-gray-700">Occlusion</label>
@@ -44,31 +44,56 @@
                 <label for="hygiene" class="block text-sm font-medium text-gray-700">Hygiene</label>
                 <input type="text" v-model="form.hygiene" id="hygiene" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
               </div>
+            </div>
 
-              <!-- Denture Upper -->
-              <div>
-                <label for="denture_upper" class="block text-sm font-medium text-gray-700">Denture Upper</label>
-                <input type="text" v-model="form.denture_upper" id="denture_upper" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <!-- Denture Upper -->
+            <div>
+              <label for="denture_upper" class="block text-sm font-medium text-gray-700">Denture Upper</label>
+              <input
+                type="text"
+                v-model="form.denture_upper"
+                id="denture_upper"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm"
+              />
+            </div>
 
-              <!-- Denture Lower -->
-              <div>
-                <label for="denture_lower" class="block text-sm font-medium text-gray-700">Denture Lower</label>
-                <input type="text" v-model="form.denture_lower" id="denture_lower" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
+            <!-- Since Upper (shown conditionally) -->
+            <div v-if="form.denture_upper">
+              <label for="since_upper" class="block text-sm font-medium text-gray-700">Since</label>
+              <input
+                type="text"
+                v-model="form.since_upper"
+                id="since_upper"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm"
+              />
+            </div>
 
-              <!-- Since Upper -->
-              <div>
-                <label for="since_upper" class="block text-sm font-medium text-gray-700">Since Upper</label>
-                <input type="text" v-model="form.since_upper" id="since_upper" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
+            <!-- Denture Lower -->
+            <div>
+              <label for="denture_lower" class="block text-sm font-medium text-gray-700">Denture Lower</label>
+              <input
+                type="text"
+                v-model="form.denture_lower"
+                id="denture_lower"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm"
+              />
+            </div>
 
-              <!-- Since Lower -->
-              <div>
-                <label for="since_lower" class="block text-sm font-medium text-gray-700">Since Lower</label>
-                <input type="text" v-model="form.since_lower" id="since_lower" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm">
-              </div>
+            <!-- Since Lower (shown conditionally) -->
+            <div v-if="form.denture_lower">
+              <label for="since_lower" class="block text-sm font-medium text-gray-700">Since</label>
+              <input
+                type="text"
+                v-model="form.since_lower"
+                id="since_lower"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-royal-purple-500 focus:border-royal-purple-500 sm:text-sm"
+              />
+            </div>
+          </div>
 
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <!-- Abnormalities -->
               <div>
                 <label for="abnormalities" class="block text-sm font-medium text-gray-700">Abnormalities</label>
@@ -124,8 +149,105 @@
               </div>
               </div>
 
+              <!-- Status Dropdown -->
+              <div class="mb-8 max-w-xl hidden">
+                <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                <select
+                  id="status"
+                  v-model="form.status"
+                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+                >
+                  <option value="pending">Pending</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="completed">Completed</option>
+                  <option value="canceled">Canceled</option>
+                </select>
+              </div>
+
+              <!-- Hidden field for appointment ID -->
+              <input type="hidden" v-model="form.appointment_id" />
+
+              <!-- dental chart here -->
+               <div>
+                <img src="/images/odontostomatological.png" class="w-full h-full mb-5" alt="">
+               </div>
+              
+              <!-- Middle Teeth Section -->
+              <div class="dental-chart">
+                <div class="flex flex-wrap items-center mb-2">
+                  <label class="font-medium text-blue-700 w-full mb-2">Operation:</label>
+                  <div v-for="tooth in teethmiddleup" :key="tooth" class="tooth-box">
+                    <input 
+                      type="checkbox" 
+                      class="tooth-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      :value="1" 
+                      v-model="dentalChartData['Middle Operation'][tooth]"
+                    />
+                    <span class="mx-2 text-gray-800">{{ tooth }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dental-chart">
+                <div class="flex flex-wrap items-center mb-2">
+                  <label class="font-medium text-blue-700 w-full mb-2">Operation:</label>
+                  <div v-for="tooth in teethmiddledown" :key="tooth" class="tooth-box">
+                    <input 
+                      type="checkbox" 
+                      class="tooth-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      :value="1" 
+                      v-model="dentalChartData['Middle Bottom Operation'][tooth]"
+                    />
+                    <span class="mx-2 text-gray-800">{{ tooth }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Upper Teeth Section -->
+              <div class="dental-chart">
+                <!-- Isolate -->
+                <div class="flex flex-wrap items-center">
+                  <label class="font-medium text-blue-700 w-full mb-2">Operation:</label>
+                  <div v-for="tooth in teeth_upper" :key="tooth" class="flex items-center mr-4 mb-2">
+                    <input 
+                      type="checkbox" 
+                      class="tooth-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      :value="1" 
+                      v-model="dentalChartData['Upper Operation'][tooth]" 
+                    />
+                    <span class="ml-2 text-gray-800">{{ tooth }}</span>
+                  </div>
+                </div>
+                <!-- Isolate -->
+                <!-- Lower Teeth Section -->
+                <div class="dental-chart">
+                <div class="flex flex-wrap items-center mb-2">
+                  <label class="font-medium text-blue-700 w-full mb-2">Operation:</label>
+                  <div v-for="tooth in teeth_bottom" :key="tooth" class="flex items-center mr-4 mb-2">
+                    <input 
+                      type="checkbox" 
+                      class="tooth-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      :value="1" 
+                      v-model="dentalChartData['Lower Operation'][tooth]" 
+                    />
+                    <span class="ml-2 text-gray-800">{{ tooth }}</span>
+                  </div>
+                </div>
+              </div>
+              </div>
+
+              <div class="flex items-center justify-center mt-4">
+                <Button @click="nextStep" class="my-8 ms-4 bg-purple-700 hover:bg-purple-800 px-4 py-2 rounded text-white">
+                    Next
+                </Button>
+              </div>
+            </div>
+
+              <!-- end dental chart here -->
+
               <!-- Diagnostic Description -->
-              <div>
+               <div v-if="step === 2">
+                <div>
                 <label for="description" class="block text-sm font-medium text-gray-700">Diagnostic Description</label>
                 <textarea
                   id="description"
@@ -135,7 +257,7 @@
                   placeholder="Describe the diagnostic details..."
                   required
                 ></textarea>
-              </div>
+                </div>
 
               <!-- Service Rendered -->
               <div>
@@ -161,103 +283,14 @@
                 ></textarea>
               </div>
 
-              <!-- Status Dropdown -->
-              <div class="mb-8 max-w-xl hidden">
-                <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-                <select
-                  id="status"
-                  v-model="form.status"
-                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-                >
-                  <option value="pending">Pending</option>
-                  <option value="confirmed">Confirmed</option>
-                  <option value="completed">Completed</option>
-                  <option value="canceled">Canceled</option>
-                </select>
-              </div>
-
-              <!-- Hidden field for appointment ID -->
-              <input type="hidden" v-model="form.appointment_id" />
-
-              <!-- dental chart here -->
-              <!-- Upper Teeth Section -->
-              <div class="dental-chart">
-                <!-- Isolate -->
-                <div class="flex flex-wrap items-center mb-4">
-                  <label class="font-medium text-blue-700 w-full mb-2">Operation:</label>
-                  <div v-for="tooth in teeth_upper" :key="tooth" class="flex items-center mr-4 mb-2">
-                    <input 
-                      type="checkbox" 
-                      class="tooth-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      :value="1" 
-                      v-model="dentalChartData['Upper Operation'][tooth]" 
-                    />
-                    <span class="ml-2 text-gray-800">{{ tooth }}</span>
-                  </div>
-                </div>
-                <!-- Isolate -->
-                <div class="image-section mb-4 ">
-                  <img src="/images/chart/upper.png" alt="Upper Teeth Chart" class="chart-image-sub ml-[8%]" />
-                </div>
-                <!-- Lower Teeth Section -->
-                <div class="dental-chart">
-                <div class="flex flex-wrap items-center mb-4">
-                  <label class="font-medium text-blue-700 w-full mb-2">Operation:</label>
-                  <div v-for="tooth in teeth_bottom" :key="tooth" class="flex items-center mr-4 mb-2">
-                    <input 
-                      type="checkbox" 
-                      class="tooth-input w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      :value="1" 
-                      v-model="dentalChartData['Lower Operation'][tooth]" 
-                    />
-                    <span class="ml-2 text-gray-800">{{ tooth }}</span>
-                  </div>
-                </div>
-              </div>
-
-                <div class="image-section mt-2">
-                  <img src="/images/chart/lower.png" alt="Lower Teeth Chart" class="chart-image-sub ml-[8%]" />
-                </div>
-              </div>
-
-              <!-- Middle Teeth Section -->
-              <div class="dental-chart">
-                <div class="row">
-                  <label class="row-label text-blue-700">Operation:</label>
-                  <div v-for="tooth in teethmiddleup" :key="tooth" class="tooth-box">
-                    <input 
-                      type="text" 
-                      class="tooth-input" 
-                      maxlength="3"
-                      @input="validateInput($event, 'Middle Operation', tooth)"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div class="image-section">
-                <img src="/images/chart/chart1.jpg" alt="Middle Teeth Chart" class="chart-image ml-[5%]" />
-              </div>
-
-              <!-- Middle Bottom Teeth Section -->
-              <div class="dental-chart">
-                <div class="row">
-                  <label class="row-label text-blue-700">Operation:</label>
-                  <div v-for="tooth in teethmiddledown" :key="tooth" class="tooth-box">
-                    <input 
-                      type="text" 
-                      class="tooth-input" 
-                      maxlength="3"
-                      @input="validateInput($event, 'Middle Bottom Operation', tooth)"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <!-- end dental chart here -->
-
               <!-- Submit button -->
                <div class="text-center">
+                <button
+                @click="prevStep"
+                class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 mt-6 mr-4 rounded"
+              >
+                Back
+              </button>
                 <button
                 type="submit"
                 class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 mt-6 rounded"
@@ -265,7 +298,7 @@
                 Submit Diagnostic
               </button>
                </div>
-              
+               </div>
             </form>
           </div>
         </div>
@@ -283,8 +316,8 @@ import Swal from 'sweetalert2';
 import { reactive } from 'vue';
 
   // Define arrays for teeth
-  const teethmiddleup = Array.from({ length: 16 }, (_, i) => i + 1);
-  const teethmiddledown = Array.from({ length: 16 }, (_, i) => i + 1);
+  const teethmiddleup = [18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28];
+  const teethmiddledown = [48, 47, 46, 45, 44, 43, 42, 41, 31, 32, 33, 34, 35, 36, 37, 38];
   const teeth_upper = [55, 54, 53, 52, 51, 61, 62, 63, 64, 65];
   const teeth_bottom = [85, 84, 83,82, 81, 71, 72, 73, 74, 75];
 // Define props
@@ -295,6 +328,15 @@ const props = defineProps({
   }
 });
 
+const step = ref(1);
+
+const nextStep = () => {
+    step.value = 2;
+};
+
+const prevStep = () => {
+    step.value = 1;
+};
 
 // Reactive data structure to store inputs
 const dentalChartData = reactive({
@@ -314,7 +356,6 @@ const dentalChartData = reactive({
       dentalChartData[section][tooth] = input; // Store the value in the data structure
       console.log(dentalChartData); // Log the structure for debugging
     }
-
 
 // Create a reactive form object with initial values
 const form = ref({
@@ -341,7 +382,6 @@ const form = ref({
   dental_chart: '',
   status: props.appointment.status
 });
-
 
 // Function to handle form submission
 async function submitForm() {
