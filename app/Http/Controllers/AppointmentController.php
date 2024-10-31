@@ -24,6 +24,12 @@ class AppointmentController extends Controller
         return inertia('Appointments/Manage', ['appointments' => $appointments]);
     }
 
+    public function staffAppointmentsManage()
+    {
+        $appointments = Appointment::with(['patient', 'dentist', 'diagnostic'])->where('status', 'pending')->get();
+        return inertia('Appointments/StaffManage', ['appointments' => $appointments]);
+    }
+
     public function myAppointments()
     {
         $userId = Auth::id();
@@ -38,10 +44,13 @@ class AppointmentController extends Controller
         // Fetch the appointment by ID and include related diagnostic and user data
         $appointment = Appointment::with(['patient', 'dentist', 'diagnostic'])
             ->findOrFail($id);
+        
+        $user = Auth::user();
 
         // Render the view with the appointment data
         return Inertia::render('Appointments/Show', [
-            'appointment' => $appointment
+            'appointment' => $appointment,
+            'role' => $user->role,
         ]);
     }
 
@@ -51,9 +60,12 @@ class AppointmentController extends Controller
         $appointment = Appointment::with(['patient', 'dentist', 'diagnostic'])
             ->findOrFail($id);
 
+        $user = Auth::user();
+
         // Render the view with the appointment data
         return Inertia::render('Appointments/View', [
-            'appointment' => $appointment
+            'appointment' => $appointment,
+            'user' => $user,
         ]);
     }
 

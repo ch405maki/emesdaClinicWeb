@@ -21,8 +21,12 @@ class ReportController extends Controller
         if ($user->role == 'dentist') {
             // Fetch all appointments for dentists
             $appointments = Appointment::has('diagnostic')->with(['patient', 'dentist', 'diagnostic'])->get();
-
-        } elseif ($user->role == 'patient') {
+        }
+        elseif ($user->role == 'staff') {
+            // Fetch all appointments for dentists
+            $appointments = Appointment::has('diagnostic')->with(['patient', 'dentist', 'diagnostic'])->get();
+        } 
+        elseif ($user->role == 'patient') {
             // Fetch only appointments made by the patient
             $appointments = $query->where('patient_id', $user->id)
                                 ->has('diagnostic')

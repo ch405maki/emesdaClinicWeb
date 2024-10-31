@@ -51,6 +51,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/appointments/manage', [AppointmentController::class, 'manage'])->name('appointments.manage');
 Route::get('/appointments/my-appointments', [AppointmentController::class, 'myAppointments'])->name('appointments.my-appointments');
+Route::get('/appointments/staff', [AppointmentController::class, 'staffAppointmentsManage'])->name('appointments.staff');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Appointments

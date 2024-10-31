@@ -6,7 +6,7 @@
         <template #header>
           <div class="flex justify-between items-center h-6">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Appointment Details</h2>
-            <div>
+            <div v-if="user.role === 'dentist'">
               <button @click="cancel" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-2">
                 Cancel
               </button>
@@ -90,7 +90,11 @@
     appointment: {
       type: Object,
       required: true
-    }
+    },
+      user: {
+          type: Array,
+          required: true
+      }
   });
   
   // Format date function

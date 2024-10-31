@@ -7,7 +7,7 @@
           <div class="flex justify-between items-center h-6">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Appointment Details</h2>
             <!-- Button to make a diagnostic -->
-            <button @click="redirectToDiagnosticForm" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+            <button v-if="role === 'dentist'" @click="redirectToDiagnosticForm" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
               Make Diagnostic
             </button>
           </div>
@@ -17,29 +17,33 @@
           <div class="max-w-7xl mx-auto px-4 space-y-6">
             <!-- Appointment Information Card -->
             <div class="bg-white shadow overflow-hidden rounded-lg">
-              <div class="px-4 py-5 sm:px-6">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">Appointment Information</h3>
-              </div>
-              <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
-                <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3">
-                  <div class="sm:col-span-1">
-                    <dt class="text-sm font-medium text-gray-500">Status</dt>
-                    <dd class="mt-1 text-sm">
-                      <span :class="statusClass(appointment.status)">
-                        <div class="font-bold text-lg">{{ appointment.status }}</div>
-                      </span>
-                    </dd>
-                  </div>
-                  <div class="sm:col-span-1">
-                    <dt class="text-sm font-medium text-gray-500">Appointment Date</dt>
-                    <dd class="mt-1 text-gray-900 font-medium text-lg">{{ formattedDate(appointment.appointment_date) }}</dd>
-                  </div>
-                </dl>
-              </div>
+            <div class="px-4 py-5 sm:px-6">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">Appointment Information</h3>
             </div>
+            <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+              <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3">
+                <div class="sm:col-span-1">
+                  <dt class="text-sm font-medium text-gray-500">Status</dt>
+                  <dd class="mt-1 text-sm">
+                    <span :class="statusClass(appointment.status)">
+                      <div class="font-bold text-lg">{{ appointment.status }}</div>
+                    </span>
+                  </dd>
+                </div>
+                <div class="sm:col-span-1">
+                  <dt class="text-sm font-medium text-gray-500">Appointment Date</dt>
+                  <dd class="mt-1 text-gray-900 font-medium text-lg">{{ formattedDate(appointment.appointment_date) }}</dd>
+                </div>
+                <div v-if="role === 'staff'" class="sm:col-span-1">
+                  <dt class="text-sm font-medium text-gray-500">Patient Name</dt>
+                  <dd class="mt-1 text-gray-900 font-medium text-lg">{{ appointment.patient.name }}</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
   
             <!-- patient Information Card -->
-            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div v-if="role === 'dentist'" class="bg-white shadow overflow-hidden sm:rounded-lg">
               <div class="px-4 py-5 sm:px-6">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">Patient Information</h3>
               </div>
@@ -85,6 +89,10 @@
   // Define props
   const props = defineProps({
     appointment: {
+      type: Object,
+      required: true
+    },
+    role: {
       type: Object,
       required: true
     }

@@ -27,17 +27,41 @@ class DashboardController extends Controller
             $appointments = Appointment::
                             where('appointment_date', '>=', now()->startOfDay())
                             ->where('status', 'confirmed')->get();
-        } elseif ($user->role == 'patient') {
+            $report = Appointment::has('diagnostic')
+                            ->with(['patient', 'dentist', 'diagnostic'])
+                            ->where('status', 'confirmed')
+                            ->latest('appointment_date')
+                            ->limit(5)
+                            ->get();
+        }
+        elseif ($user->role == 'staff') {
+            $request = Appointment::
+                        where('status', 'pending')
+                        ->where('appointment_date', '>=', now()->startOfDay())
+                        ->get();
+            $appointments = Appointment::
+                            where('appointment_date', '>=', now()->startOfDay())
+                            ->where('status', 'confirmed')->get();
+            $report = Appointment::has('diagnostic')
+                            ->with(['patient', 'dentist', 'diagnostic'])
+                            ->where('status', 'confirmed')
+                            ->latest('appointment_date')
+                            ->limit(5)
+                            ->get();
+        }
+        elseif ($user->role == 'patient') {
             $request = Appointment::
                         where('patient_id', $user->id)
                         ->where('status', 'pending')
                         ->where('appointment_date', '>=', now()->startOfDay())
                         ->get();
             $appointments = Appointment::where('patient_id', $user->id)
+                                ->where('status', 'confirmed')
                                 ->where('appointment_date', '>=', now()->startOfDay())
                                 ->with(['dentist', 'diagnostic'])
                                 ->orderBy('appointment_date', 'asc')
                                 ->get();
+            $report = $report ?? null;
         } else {
             // If the user role is neither dentist nor student, return an empty collection
             $appointments = collect();
@@ -48,6 +72,7 @@ class DashboardController extends Controller
             'appointments' => $appointments,
             'role' => $user->role,
             'request' => $request,
+            'reports' => $report,
         ]);
     }
 }

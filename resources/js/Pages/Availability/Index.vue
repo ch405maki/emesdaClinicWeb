@@ -5,7 +5,7 @@
         <div class="max-w-7xl mx-auto py-4 px-4 mb-4 mx-10 sm:px-6 lg:px-8 rounded-lg bg-white shadow">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dentist Availability</h2>
         </div>
-        <div class="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="flex flex-col min-h-screen bg-gray-100">
             <main class="flex-grow">
                 <div class="max-w-7xl mx-auto">
                     <div class="flex flex-col md:flex-row w-full justify-center">

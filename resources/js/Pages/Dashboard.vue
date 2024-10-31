@@ -24,7 +24,7 @@
                       </template>
                         <v-card-text class="text-center">
                         <div v-if="request && request.length">
-                          <p class="text-xl font-bold text-violet-800 mt-2">
+                          <p class="text-xl font-bold text-purple-900 mt-2">
                             Appointment Request: {{ request.length }}
                           </p>
                         </div>
@@ -32,8 +32,8 @@
                           No Appointment Request at the moment
                         </div>
                         <div class="flex justify-center sm:justify-start mb-6 mt-6">
-                        <div v-if="role == 'dentist'">
-                          <a :href="route('appointments.manage')" class="text-slate-800 font-medium text-base border border-green-800 hover:bg-violet-800 hover:text-white rounded-xl px-4 py-2 transition-colors duration-300">
+                        <div v-if="role == 'dentist' || role =='staff'">
+                          <a :href="route('appointments.manage')" class="text-slate-800 font-medium text-base border border-green-800 hover:bg-violet-00 hover:text-white rounded-xl px-4 py-2 transition-colors duration-300">
                             Manage
                           </a>
                         </div>
@@ -96,7 +96,46 @@
                     </v-card-text>
                   </v-card>
                 </v-col>
-                <!-- Other cards... -->
+
+                <div v-if="role === 'dentist' || role === 'staff'" class="mx-4 md:mx-10 my-6">
+                  <!-- Table -->
+                  <div class="shadow-lg rounded-lg overflow-hidden">
+                    <div class="flex items-center bg-white p-4 justify-between">
+                      <h2 class="text-xl font-bold text-gray-800">Recent Records</h2>
+                  </div>
+                      <table class="w-full table-fixed">
+                          <thead>
+                              <tr class="bg-gray-100">
+                                  <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Name</th>
+                                  <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Date</th>
+                                  <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Time</th>
+                                  <th class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">Status</th>
+                              </tr>
+                          </thead>
+                          <tbody class="bg-white">
+                              <tr v-for="report in reports" :key="report.id">
+                                  <td class="py-4 px-6 border-b border-gray-200">{{ report.patient.name }}</td>
+                                  <td class="py-4 px-6 border-b border-gray-200">{{ formatDate(report.appointment_date) }}</td>
+                                  <td class="py-4 px-6 border-b border-gray-200">{{ formatTime(report.appointment_date) }}</td>
+                                  <td class="py-4 px-6 border-b border-gray-200">
+                                      <span class="bg-green-500 text-white py-1 px-2 rounded-full text-xs">Completed</span>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                      <div class="shadow-lg rounded-lg overflow-hidden">
+                    <div class="flex items-center bg-white p-4 justify-center">
+                      <a :href="route('reports.index')"
+                        class="bg-green-500 text-white font-bold py-2 px-4 rounded-xl 
+                                hover:bg-green-600">
+                        Show All Records
+                      </a>
+                    </div>
+                  </div>
+                  </div>
+              </div>
+
+                <!-- End of upcoming appointments -->
               </v-row>
             </v-col>
           </v-row>
@@ -122,6 +161,10 @@
     required: true
   },
   role: {
+    type: Object,
+    required: true
+  },
+  reports: {
     type: Object,
     required: true
   },
