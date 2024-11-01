@@ -13,6 +13,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DentistAvailabilityController;
+use App\Http\Controllers\SidebarController;
 
 // use App\Http\Controllers\SmsController;
 
@@ -42,6 +43,7 @@ Route::get('/logout', function() {
 })->name('/');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/sidebar', [SidebarController::class, 'fetchPendingAppointments']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -20,7 +20,6 @@
                 </div>
                 </div>
               </div>
-              
               <!-- Search Section -->
               <div class="min-w-0 flex-1 md:px-8 lg:py-2 xl:col-span-6">
                 <div class="flex items-center px-6 py-4 md:mx-auto md:max-w-3xl lg:mx-0 lg:max-w-none xl:px-0">
@@ -43,11 +42,16 @@
 
               <!-- Desktop Actions -->
               <div class="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
-                <a href="#" class="ml-5 flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2">
+                <a :href="route('appointments.manage')" class="ml-5 flex-shrink-0 relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2">
                   <span class="sr-only">View notifications</span>
                   <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"></path>
                   </svg>
+                  
+                  <!-- Sidebar Length Notification -->
+                  <span class="absolute top-0 mt-[1px] right-0 inline-flex items-center justify-center w-3 h-3 p-3 text-sm font-medium text-red-800 bg-red-100 rounded-full transform translate-x-1/2 -translate-y-1/2">
+                    {{ sidebar.length }}
+                  </span>
                 </a>
                 <div class="relative ml-5 flex-shrink-0">
                   <button type="button" class="flex rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2" @click="toggleProfileMenu">
@@ -78,6 +82,19 @@
               <a :href="route('dashboard')" class="bg-gray-100 text-gray-900 block rounded-md py-2 px-3 text-base font-medium">Home</a>
               <a :href="route('appointments.staff')" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">View Appointment(s)</a>
               <a :href="route('reports.index')" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Patient Records</a>
+            </div>
+            <div v-if="user.role == 'dentist'" class="mx-auto max-w-3xl space-y-1 px-2 pt-2 pb-3 sm:px-4">
+              <a :href="route('dashboard')" class="bg-gray-100 text-gray-900 block rounded-md py-2 px-3 text-base font-medium">Home</a>
+              <a :href="route('appointments.index')" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Appointment(s)</a>
+              <a :href="route('appointments.create')" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">New Appointment</a>
+              <a :href="route('appointments.manage')" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Manage</a>
+              <a :href="route('reports.index')" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Patient Records</a>
+              <div class="border-t border-gray-200 pt-4">
+              <div class="mx-auto max-w-3xl space-y-1">
+                <a :href="route('dentist.availability')" class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Availability</a>
+                <a :href="route('staff')"  class="hover:bg-gray-50 block rounded-md py-2 px-3 text-base font-medium">Manage Staff</a>
+              </div>
+            </div>
             </div>
             <div class="border-t border-gray-200 pt-4">
               <div class="mx-auto max-w-3xl space-y-1 px-4">
@@ -185,8 +202,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import { Inertia } from '@inertiajs/inertia';
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
+import { router } from '@inertiajs/vue3';  
 import { Link } from '@inertiajs/vue3';
 
 // State management using ref for menu visibility
@@ -205,6 +221,19 @@ const toggleMenu = () => {
 const toggleProfileMenu = () => {
   isProfileMenuOpen.value = !isProfileMenuOpen.value;
 };
+
+const sidebar = ref([]); // Store banners as an array
+
+  const FetchSidebar = async () => {
+    try {
+      const response = await fetch('/sidebar');
+      sidebar.value = await response.json(); // Fetch the data as an array
+    } catch (error) {
+      console.error('Error fetching sidebar:', error);
+    }
+  };
+
+onMounted(FetchSidebar);
 
 // Ref to manage the visibility of the dropdown
 const showingNavigationDropdown = ref(false);

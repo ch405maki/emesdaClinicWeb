@@ -33,7 +33,7 @@
                         </div>
                         <div class="flex justify-center sm:justify-start mb-6 mt-6">
                         <div v-if="role == 'dentist' || role =='staff'">
-                          <a :href="route('appointments.manage')" class="text-slate-800 font-medium text-base border border-green-800 hover:bg-violet-00 hover:text-white rounded-xl px-4 py-2 transition-colors duration-300">
+                          <a :href="route('appointments.manage')" class="text-slate-800 font-medium text-base border border-green-800 hover:bg-violet-800 hover:text-white rounded-xl px-4 py-2 transition-colors duration-300">
                             Manage
                           </a>
                         </div>
