@@ -38,9 +38,13 @@ Route::get('/', function () {
 });
 
 Route::get('/logout', function() {
-    Auth::logout(); // Logs out the user
-    return redirect('/login'); // Redirect to login or home
-})->name('/');
+    Auth::logout();
+    return redirect('/login');
+})->name('/logout');
+
+Route::get('/login', function() {
+    return view('auth.login');
+})->name('login');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/sidebar', [SidebarController::class, 'fetchPendingAppointments']);
