@@ -80,24 +80,62 @@ class AppointmentController extends Controller
         return Inertia::render('Appointments/Create', ['userId' => $userId, 'availabilities' => $DentistAvailability]);
     }
 
+    // public function store(Request $request)
+    // {
+    //     // Validate the request data
+    //     $validated = $request->validate([
+    //         'patient_id' => 'required|integer',
+    //         'dentist_id' => 'required|integer',
+    //         'appointment_date' => 'required|date',
+    //         'status' => 'required|in:pending,confirmed,completed,canceled',
+    //     ]);
+
+    //     dd($validated);
+
+    //     // Create a new appointment with all fields
+    //     Appointment::create($validated);
+
+    //     // Return a success response
+    //     return redirect()->route('appointments.my-appointments')->with('success', 'Appointment created successfully.');
+    // }
+
     public function store(Request $request)
-    {
-        // Validate the request data
-        $validated = $request->validate([
-            'patient_id' => 'required|integer',
-            'dentist_id' => 'required|integer',
-            'appointment_date' => 'required|date',
-            'status' => 'required|in:pending,confirmed,completed,canceled',
-        ]);
+{
+    // Validate the request data
+    $validated = $request->validate([
+        'patient_id' => 'required|integer',
+        'dentist_id' => 'required|integer',
+        'appointment_date' => 'required|date',
+        'status' => 'required|in:pending,confirmed,completed,canceled',
+    ]);
 
-        // Create a new appointment with all fields
-        Appointment::create($validated);
+    // Optional: Check the validated data for debugging before further processing
+    //dd($validated); // Uncomment if needed to inspect validated data
 
-        // Return a success response
-        return redirect()->route('appointments.my-appointments')->with('success', 'Appointment created successfully.');
+    // Parse the date and time from appointment_date
+    $appointmentDate = \Carbon\Carbon::parse($validated['appointment_date']);
+    $date = $appointmentDate->format('Y-m-d'); // Extract just the date
+    $time = $appointmentDate->format('H:i:s'); // Extract just the time
+
+    // Check dentist availability
+    $availability = DentistAvailability::where('dentist_id', $validated['dentist_id'])
+        ->where('date', $date)
+        ->first();
+
+    if (!$availability) {
+        return back()->withErrors(['appointment_date' => 'The selected time is unavailable for the dentist.'])->withInput();
     }
 
+    // Create a new appointment with the validated data
+    
+    $appointment = Appointment::create($validated);
 
+    if ($appointment) {
+        return redirect()->route('appointments.my-appointments')->with('success', 'Appointment created successfully.');
+    } else {
+        return back()->withErrors(['appointment_date' => 'Failed to save appointment, please try again.'])->withInput();
+    }
+}
 
     public function updateStatus(Request $request, Appointment $appointment)
 {

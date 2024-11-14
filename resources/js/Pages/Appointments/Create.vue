@@ -14,6 +14,17 @@
         </div>
       </template>
 
+      <div class="max-w-7xl px-4">
+        <div class="bg-blue-200 px-10 py-4 mx-2 mt-6 rounded-md text-lg flex items-center mx-auto max-w-full ">
+        <svg viewBox="0 0 24 24" class="text-blue-600 w-5 h-5 sm:w-5 sm:h-5 mr-3">
+            <path fill="currentColor"
+                d="M12,0A12,12,0,1,0,24,12,12.013,12.013,0,0,0,12,0Zm.25,5a1.5,1.5,0,1,1-1.5,1.5A1.5,1.5,0,0,1,12.25,5ZM14.5,18.5h-4a1,1,0,0,1,0-2h.75a.25.25,0,0,0,.25-.25v-4.5a.25.25,0,0,0-.25-.25H10.5a1,1,0,0,1,0-2h1a2,2,0,0,1,2,2v4.75a.25.25,0,0,0,.25.25h.75a1,1,0,1,1,0,2Z">
+            </path>
+        </svg>
+        <span class="text-blue-800 text-sm sm:text-base"> You Can Only Make Appointments Within Available Date and Hours. </span>
+        </div>
+      </div>
+
       <div class="bg-white my-8 mx-4 rounded shadow p-8">
         <!-- FullCalendar component with options -->
         <FullCalendar 
@@ -45,17 +56,17 @@
           <p class="mt-2 text-sm text-gray-500">Selected Date: {{ formattedAppointmentDate }}</p>
       </div>
 
-          <div class="mb-4 flex justify-center">
-              <div class="text-center">
-                  <label class="block text-sm font-medium text-gray-700">Start Time</label>
-                  <p class="mt-1 text-gray-800">{{ form.start_time }}</p>
-              </div>
-              
-              <div class="mx-6 text-center"> <!-- Added margin for spacing -->
-                  <label class="block text-sm font-medium text-gray-700">End Time</label>
-                  <p class="mt-1 text-gray-800">{{ form.end_time }}</p>
-              </div>
-          </div>
+        <!-- <div class="mb-4 flex justify-center">
+            <div class="text-center">
+                <label class="block text-sm font-medium text-gray-700">Start Time</label>
+                <p class="mt-1 text-gray-800">{{ form.start_time }}</p>
+            </div>
+            
+            <div class="mx-6 text-center">
+                <label class="block text-sm font-medium text-gray-700">End Time</label>
+                <p class="mt-1 text-gray-800">{{ form.end_time }}</p>
+            </div>
+        </div> -->
 
           <div class="flex justify-center items-center">
             <button
@@ -77,10 +88,12 @@ import { ref, computed } from 'vue';
 import { Head, router, usePage } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Swal from 'sweetalert2';
+import { onMounted } from 'vue';
 import axios from 'axios';
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { Inertia } from '@inertiajs/inertia';
 
 const page = usePage();
 const userId = page.props.userId;
@@ -108,11 +121,7 @@ const closeModal = () => {
 };
 
 const handleDateClick = (info) => {
-    form.value.appointment_date = info.dateStr; // The selected date
-    const startDate = new Date(info.dateStr); // Create a Date object
-    startDate.setHours(8, 33); // Set start time to 08:33 AM
-    const endDate = new Date(info.dateStr); // Create another Date object
-    endDate.setHours(20, 33); // Set end time to 08:33 PM
+    form.value.appointment_date = info.dateStr;
 
     form.value.start_time = startDate.toTimeString().split(' ')[0].substring(0, 5); // Format HH:mm
     form.value.end_time = endDate.toTimeString().split(' ')[0].substring(0, 5); // Format HH:mm
@@ -173,33 +182,60 @@ const calendarOptions = {
   }
 };
 
+
+onMounted(() => {
+  if (props.errors.appointment_date) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: props.errors.appointment_date,
+      confirmButtonText: 'OK'
+    });
+  }
+});
+
 const handleSubmit = async () => {
   try {
-    const formattedDate = new Date(form.value.appointment_date).toISOString();
+    // Format the date to the format Laravel expects
+    const formattedDate = new Date(form.value.appointment_date).toISOString().replace('T', ' ').slice(0, 19);
     const formData = { ...form.value, appointment_date: formattedDate };
 
-    await axios.post(route('appointments.store'), formData);
-    Swal.fire({
-      icon: 'success',
-      title: 'Appointment Created',
-      text: 'The appointment has been created successfully.',
-      confirmButtonText: 'OK'
-    }).then(() => {
-      router.visit(route('appointments.my-appointments'));
-    });
+    Inertia.post(route('appointments.store'), formData, {
+      onSuccess: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Appointment Created',
+          text: 'The appointment has been created successfully.',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          router.visit(route('appointments.my-appointments'));
+        });
 
-    form.value = {
-      patient_id: userId,
-      dentist_id: '2',
-      appointment_date: '',
-      status: 'pending',
-    };
-    closeModal();
+        // Reset the form and close modal
+        form.value = {
+          patient_id: userId,
+          dentist_id: '2',
+          appointment_date: '',
+          status: 'pending',
+        };
+        closeModal();
+      },
+      onError: (errors) => {
+        // Capture and display validation errors
+        const errorMessage = Object.values(errors).flat().join('\n');
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: errorMessage || 'There was a problem creating the appointment.',
+          confirmButtonText: 'Try Again'
+        });
+      }
+    });
   } catch (error) {
     Swal.fire({
       icon: 'error',
       title: 'Error',
-      text: 'There was a problem creating the appointment.',
+      text: 'There was an unexpected error creating the appointment.',
       confirmButtonText: 'Try Again'
     });
   }
