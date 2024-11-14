@@ -23,14 +23,14 @@ class StaffController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
-            'role' => 'required',
+            'role' => 'required',   
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role' => 'staff',
         ]);
 
         return redirect()->route('staff')->with('success', 'Staff created successfully.');

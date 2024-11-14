@@ -121,7 +121,7 @@ const form = useForm({
     name: '',
     email: '',
     password: '',
-    role: 'Staff',
+    role: 'staff',
 });
 
 const deleteUser = (id, name) => {

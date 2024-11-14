@@ -10,14 +10,18 @@ use Illuminate\Support\Facades\Auth;
 class DashboardController extends Controller
 {
     public function index()
-    {
-        // Get the currently authenticated user
-        $user = Auth::user();
+{
+    // Get the currently authenticated user
+    $user = Auth::user();
 
-        // Initialize the appointments query
-        $query = Appointment::where('appointment_date', '>=', now()->startOfDay())
-                    ->where('status', 'confirmed');
+    // Initialize the appointments query
+    $query = Appointment::where('appointment_date', '>=', now()->startOfDay())
+                ->where('status', 'confirmed');
 
+        // Initialize variables to avoid undefined variable issues
+        $request = collect();
+        $appointments = collect();
+        $report = null;
 
         if ($user->role == 'dentist') {
             $request = Appointment::
@@ -62,9 +66,6 @@ class DashboardController extends Controller
                                 ->orderBy('appointment_date', 'asc')
                                 ->get();
             $report = $report ?? null;
-        } else {
-            // If the user role is neither dentist nor student, return an empty collection
-            $appointments = collect();
         }
 
         // Return the view with the fetched data
@@ -75,4 +76,5 @@ class DashboardController extends Controller
             'reports' => $report,
         ]);
     }
+
 }
