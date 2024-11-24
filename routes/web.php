@@ -15,6 +15,8 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DentistAvailabilityController;
 use App\Http\Controllers\SidebarController;
 
+use Illuminate\Support\Facades\Mail;
+
 // use App\Http\Controllers\SmsController;
 
 /*
@@ -45,6 +47,36 @@ Route::get('/logout', function() {
 Route::get('/login', function() {
     return view('auth.login');
 })->name('login');
+
+
+// Mail
+
+Route::get('/test-email', function () {
+    $details = [
+        'subject' => 'Test Email from Emesda Dental Clinic',
+        'body' => 'This is a test email to verify the SMTP configuration.',
+    ];
+
+    Mail::raw($details['body'], function ($message) use ($details) {
+        $message->from('em@emesdadentalclinic.com', 'Emesda Dental Clinic')
+                ->to('markmanuel0317@gmail.com')
+                ->subject($details['subject']);
+    });
+
+    return 'Test email sent!';
+});
+
+// MAIL_MAILER=smtp
+// MAIL_HOST=mail.emesdadentalclinic.com
+// MAIL_PORT=465
+// MAIL_USERNAME=em@emesdadentalclinic.com
+// MAIL_PASSWORD=Ch405maki
+// MAIL_ENCRYPTION=ssl
+// MAIL_FROM_ADDRESS=em@emesdadentalclinic.com
+// MAIL_FROM_NAME="Emesda Dental Clinic"
+// MAIL_ENCRYPTION=tls
+
+///////////////////////
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/sidebar', [SidebarController::class, 'fetchPendingAppointments']);
