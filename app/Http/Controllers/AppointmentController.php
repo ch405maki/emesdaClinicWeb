@@ -130,8 +130,10 @@ class AppointmentController extends Controller
     
     $appointment = Appointment::create($validated);
 
+    // dd($appointment);
+
     if ($appointment) {
-        return redirect()->route('appointments.my-appointments')->with('success', 'Appointment created successfully.');
+        return redirect()->back()->with('success', 'Appointment status updated successfully.');
     } else {
         return back()->withErrors(['appointment_date' => 'Failed to save appointment, please try again.'])->withInput();
     }

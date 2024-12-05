@@ -196,22 +196,31 @@ onMounted(() => {
 
 const handleSubmit = async () => {
   try {
-    // Format the date to the format Laravel expects
-    const formattedDate = new Date(form.value.appointment_date).toISOString().replace('T', ' ').slice(0, 19);
+    // Format the date to match Laravel's expected format
+    const formattedDate = new Date(form.value.appointment_date)
+      .toISOString()
+      .replace('T', ' ')
+      .slice(0, 19);
+
     const formData = { ...form.value, appointment_date: formattedDate };
 
-    Inertia.post(route('appointments.store'), formData, {
-      onSuccess: () => {
+    router.post(route('appointments.store'), formData, {
+      onSuccess: (page) => {
+        // Extract flash message if available
+        const successMessage = page?.props?.flash?.success || 'The appointment has been created successfully.';
+
+        // Show success alert
         Swal.fire({
           icon: 'success',
           title: 'Appointment Created',
-          text: 'The appointment has been created successfully.',
-          confirmButtonText: 'OK'
+          text: successMessage,
+          confirmButtonText: 'OK',
         }).then(() => {
+          // Redirect to appointments list after success
           router.visit(route('appointments.my-appointments'));
         });
 
-        // Reset the form and close modal
+        // Reset the form and close the modal
         form.value = {
           patient_id: userId,
           dentist_id: '2',
@@ -221,25 +230,26 @@ const handleSubmit = async () => {
         closeModal();
       },
       onError: (errors) => {
-        // Capture and display validation errors
+        // Handle errors and show validation messages
         const errorMessage = Object.values(errors).flat().join('\n');
         Swal.fire({
           icon: 'error',
           title: 'Error',
           text: errorMessage || 'There was a problem creating the appointment.',
-          confirmButtonText: 'Try Again'
+          confirmButtonText: 'Try Again',
         });
-      }
+      },
     });
   } catch (error) {
     Swal.fire({
       icon: 'error',
       title: 'Error',
       text: 'There was an unexpected error creating the appointment.',
-      confirmButtonText: 'Try Again'
+      confirmButtonText: 'Try Again',
     });
   }
 };
+
 </script>
 
 <style scoped>
