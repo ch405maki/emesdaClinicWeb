@@ -1,7 +1,5 @@
 <?php
 
-// app/Http/Controllers/AppointmentController.php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,6 +7,9 @@ use App\Models\Appointment;
 use App\Models\DentistAvailability;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\AppointmentConfirmation;
+use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
@@ -100,58 +101,81 @@ class AppointmentController extends Controller
     // }
 
     public function store(Request $request)
+    {
+        // Validate the request data
+        $validated = $request->validate([
+            'patient_id' => 'required|integer',
+            'dentist_id' => 'required|integer',
+            'appointment_date' => 'required|date',
+            'status' => 'required|in:pending,confirmed,completed,canceled',
+        ]);
+
+        // Optional: Check the validated data for debugging before further processing
+        //dd($validated); // Uncomment if needed to inspect validated data
+
+        // Parse the date and time from appointment_date
+        $appointmentDate = \Carbon\Carbon::parse($validated['appointment_date']);
+        $date = $appointmentDate->format('Y-m-d'); // Extract just the date
+        $time = $appointmentDate->format('H:i:s'); // Extract just the time
+
+        // Check dentist availability
+        $availability = DentistAvailability::where('dentist_id', $validated['dentist_id'])
+            ->where('date', $date)
+            ->first();
+
+        if (!$availability) {
+            return back()->withErrors(['appointment_date' => 'The selected time is unavailable for the dentist.'])->withInput();
+        }
+
+        // Create a new appointment with the validated data
+        
+        $appointment = Appointment::create($validated);
+
+        // dd($appointment);
+
+        if ($appointment) {
+            return redirect()->back()->with('success', 'Appointment status updated successfully.');
+        } else {
+            return back()->withErrors(['appointment_date' => 'Failed to save appointment, please try again.'])->withInput();
+        }
+    }
+
+
+public function sendConfirmationEmail(Request $request)
 {
-    // Validate the request data
-    $validated = $request->validate([
-        'patient_id' => 'required|integer',
-        'dentist_id' => 'required|integer',
+    $data = $request->validate([
+        'user_name' => 'required|string',
+        'user_email' => 'required|email',
         'appointment_date' => 'required|date',
-        'status' => 'required|in:pending,confirmed,completed,canceled',
+        'dentist_name' => 'required|string',
     ]);
 
-    // Optional: Check the validated data for debugging before further processing
-    //dd($validated); // Uncomment if needed to inspect validated data
+    // Parse the appointment date and set it to Philippine Time
+    $appointmentDate = Carbon::parse($data['appointment_date'])->setTimezone('Asia/Manila');
 
-    // Parse the date and time from appointment_date
-    $appointmentDate = \Carbon\Carbon::parse($validated['appointment_date']);
-    $date = $appointmentDate->format('Y-m-d'); // Extract just the date
-    $time = $appointmentDate->format('H:i:s'); // Extract just the time
-
-    // Check dentist availability
-    $availability = DentistAvailability::where('dentist_id', $validated['dentist_id'])
-        ->where('date', $date)
-        ->first();
-
-    if (!$availability) {
-        return back()->withErrors(['appointment_date' => 'The selected time is unavailable for the dentist.'])->withInput();
-    }
-
-    // Create a new appointment with the validated data
+    // Format the date as "December 6, 2024 3:06 PM"
+    $data['appointment_date'] = $appointmentDate->format('F j, Y h:i A');
     
-    $appointment = Appointment::create($validated);
+    // Send the email
+    Mail::to($data['user_email'])->send(new AppointmentConfirmation($data));
 
-    // dd($appointment);
-
-    if ($appointment) {
-        return redirect()->back()->with('success', 'Appointment status updated successfully.');
-    } else {
-        return back()->withErrors(['appointment_date' => 'Failed to save appointment, please try again.'])->withInput();
-    }
+    return redirect()->back()->with('success', 'Appointment confirmation email sent successfully.');
 }
+
 
     public function updateStatus(Request $request, Appointment $appointment)
-{
-    $validated = $request->validate([
-        'status' => 'required|string|in:pending,confirmed,completed,canceled',
-    ]);
+    {
+        $validated = $request->validate([
+            'status' => 'required|string|in:pending,confirmed,completed,canceled',
+        ]);
 
-    // Update appointment status
-    $appointment->update(['status' => $validated['status']]);
+        // Update appointment status
+        $appointment->update(['status' => $validated['status']]);
 
-    // Redirect to the manage page with a flash success message using Inertia
-    return redirect()->back()->with('success', 'Appointment status updated successfully.');
+        // Redirect to the manage page with a flash success message using Inertia
+        return redirect()->back()->with('success', 'Appointment status updated successfully.');
 
-}
+    }
     
 
 

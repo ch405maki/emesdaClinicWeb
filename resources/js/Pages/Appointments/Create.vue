@@ -93,7 +93,6 @@ import axios from 'axios';
 import FullCalendar from '@fullcalendar/vue3';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { Inertia } from '@inertiajs/inertia';
 
 const page = usePage();
 const userId = page.props.userId;
@@ -101,8 +100,8 @@ const userId = page.props.userId;
 const props = defineProps({
   availabilities: {
     type: Array,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const form = ref({
@@ -121,24 +120,21 @@ const closeModal = () => {
 };
 
 const handleDateClick = (info) => {
-    form.value.appointment_date = info.dateStr;
-
-    form.value.start_time = startDate.toTimeString().split(' ')[0].substring(0, 5); // Format HH:mm
-    form.value.end_time = endDate.toTimeString().split(' ')[0].substring(0, 5); // Format HH:mm
-    openModal();
+  form.value.appointment_date = info.dateStr;
+  openModal();
 };
 
-
+// Format time for display
 const formatTime = (time) => {
-    const date = new Date(time); // Create a date object from the provided time
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    const formattedHour = hours % 12 || 12; // Convert to 12-hour format
-    return `${formattedHour}:${minutes.toString().padStart(2, '0')} ${ampm}`; // Ensures two digits for minutes
+  const date = new Date(time);
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const formattedHour = hours % 12 || 12;
+  return `${formattedHour}:${minutes.toString().padStart(2, '0')} ${ampm}`;
 };
 
-
+// Format the date and time for submission (e.g., '2024-12-06 14:30:00')
 const formattedAppointmentDate = computed(() => {
   if (!form.value.appointment_date) return '';
 
@@ -149,24 +145,25 @@ const formattedAppointmentDate = computed(() => {
     day: '2-digit',
     hour: 'numeric',
     minute: '2-digit',
-    hour12: true // Ensures that the time is in 12-hour format with AM/PM
+    hour12: true,
   };
 
   return date.toLocaleString('en-US', options);
 });
 
+// Calendar options for the FullCalendar component
 const calendarOptions = {
-    initialView: 'dayGridMonth',
-    plugins: [dayGridPlugin, interactionPlugin],
-    events: props.availabilities.map(availability => ({
-        id: availability.id,
-        start: `${availability.date}T${availability.start_time}`, // Ensure this is correct
-        end: `${availability.date}T${availability.end_time}`,     // Ensure this is correct
-        backgroundColor: '#28a745', // Set a background color for the event
-        borderColor: '#28a745',
-    })),
-    dateClick: handleDateClick,
-    eventContent: (arg) => {
+  initialView: 'dayGridMonth',
+  plugins: [dayGridPlugin, interactionPlugin],
+  events: props.availabilities.map((availability) => ({
+    id: availability.id,
+    start: `${availability.date}T${availability.start_time}`,
+    end: `${availability.date}T${availability.end_time}`,
+    backgroundColor: '#28a745',
+    borderColor: '#28a745',
+  })),
+  dateClick: handleDateClick,
+  eventContent: (arg) => {
     const startTime = formatTime(arg.event.start);
     const endTime = formatTime(arg.event.end);
 
@@ -177,11 +174,10 @@ const calendarOptions = {
           <div class="fc-event-title">${endTime}</div>
           <div class="active-indicator" style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #28a745; margin-left: 5px;"></div>
         </div>
-      `
+      `,
     };
-  }
+  },
 };
-
 
 onMounted(() => {
   if (props.errors.appointment_date) {
@@ -189,38 +185,38 @@ onMounted(() => {
       icon: 'error',
       title: 'Error',
       text: props.errors.appointment_date,
-      confirmButtonText: 'OK'
+      confirmButtonText: 'OK',
     });
   }
 });
 
+// Handle form submission
 const handleSubmit = async () => {
   try {
-    // Format the date to match Laravel's expected format
-    const formattedDate = new Date(form.value.appointment_date)
-      .toISOString()
-      .replace('T', ' ')
-      .slice(0, 19);
+    // Convert the appointment date to Manila timezone
+    const appointmentDate = new Date(form.value.appointment_date);
+    const manilaDate = new Date(appointmentDate.toLocaleString("en-US", { timeZone: "Asia/Manila" }));
+    
+    // Format the date to match the backend format
+    const formattedDate = manilaDate.toISOString().replace('T', ' ').slice(0, 19);
 
-    const formData = { ...form.value, appointment_date: formattedDate };
+    const formData = {
+      ...form.value,
+      appointment_date: formattedDate,  // Send the converted date to the backend
+    };
 
+    // Create the appointment
     router.post(route('appointments.store'), formData, {
       onSuccess: (page) => {
-        // Extract flash message if available
         const successMessage = page?.props?.flash?.success || 'The appointment has been created successfully.';
-
-        // Show success alert
         Swal.fire({
           icon: 'success',
           title: 'Appointment Created',
           text: successMessage,
           confirmButtonText: 'OK',
         }).then(() => {
-          // Redirect to appointments list after success
           router.visit(route('appointments.my-appointments'));
         });
-
-        // Reset the form and close the modal
         form.value = {
           patient_id: userId,
           dentist_id: '2',
@@ -230,7 +226,6 @@ const handleSubmit = async () => {
         closeModal();
       },
       onError: (errors) => {
-        // Handle errors and show validation messages
         const errorMessage = Object.values(errors).flat().join('\n');
         Swal.fire({
           icon: 'error',
@@ -251,6 +246,7 @@ const handleSubmit = async () => {
 };
 
 </script>
+
 
 <style scoped>
 .fixed {

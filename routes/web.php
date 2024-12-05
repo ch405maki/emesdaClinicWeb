@@ -17,6 +17,8 @@ use App\Http\Controllers\SidebarController;
 
 use Illuminate\Support\Facades\Mail;
 
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 // use App\Http\Controllers\SmsController;
 
 /*
@@ -91,6 +93,24 @@ Route::get('/appointments/manage', [AppointmentController::class, 'manage'])->na
 Route::get('/appointments/my-appointments', [AppointmentController::class, 'myAppointments'])->name('appointments.my-appointments');
 Route::get('/appointments/staff', [AppointmentController::class, 'staffAppointmentsManage'])->name('appointments.staff');
 
+Route::post('/send-appointment-email', [AppointmentController::class, 'sendConfirmationEmail'])->name('appointments.email');
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('/dashboard'); // Fixed missing closing quote
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Appointments
@@ -129,13 +149,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 Route::get('/download-apk', function () {
-    $filePath = public_path('application/dentalClinic.apk');
-    
-    if (file_exists($filePath)) {
-        return response()->download($filePath, 'dentalClinic.apk');
-    } else {
-        abort(404, 'File not found.');
-    }
-});
+    return redirect()->away('https://www.mediafire.com/');
+})->name('download-apk');
 
 require __DIR__.'/auth.php';

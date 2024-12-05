@@ -106,38 +106,62 @@
   function confirm() {
     const data = { status: 'confirmed' };
 
-    // Make a PUT request to update the appointment status
+    // Update the appointment status
     router.put(`/appointments/${props.appointment.id}/update-status`, data, {
-        onSuccess: (page) => {
-        // Check if the flash message is in the page object
+      onSuccess: async (page) => {
         const successMessage = page?.props?.flash?.success || 'Appointment status updated successfully.';
 
-        // Display success message using SweetAlert
-        Swal.fire({
-            title: 'Success!',
-            text: successMessage,
-            icon: 'success',
-            confirmButtonText: 'OK'
-        }).then(() => {
-            // Redirect to appointment management page after clicking OK
-            router.visit('/appointments/manage');
+        // Send the confirmation email after updating the status
+        const emailData = {
+          user_name: props.appointment.patient.name, // Use dynamic patient name
+          user_email: props.appointment.patient.email, // Use dynamic patient email
+          dentist_name: props.appointment.dentist.name, // Use dynamic dentist name
+          appointment_date: props.appointment.appointment_date, // Use dynamic appointment date
+        };
+
+        // Make a POST request to send the email
+        router.post(route('appointments.email'), emailData, {
+          onSuccess: () => {
+            // Display a success message for email and appointment status update
+            Swal.fire({
+              icon: 'success',
+              title: 'Appointment Confirmed',
+              text: successMessage,
+              confirmButtonText: 'OK',
+            }).then(() => {
+              // Redirect to appointment management page
+              router.visit('/appointments/manage');
+            });
+          },
+          onError: () => {
+            // Display a warning if the email failed to send
+            Swal.fire({
+              icon: 'warning',
+              title: 'Appointment Confirmed',
+              text: 'The appointment was confirmed, but the confirmation email could not be sent.',
+              confirmButtonText: 'OK',
+            });
+          },
         });
 
         // Update local appointment status
-        props.appointment.status = 'confirmed'; // Update local state
-        },
-        onError: (errors) => {
-        // Handle error response and show error alert
+        props.appointment.status = 'confirmed';
+      },
+      onError: (errors) => {
+        // Handle errors when updating the appointment status
         Swal.fire({
-            title: 'Error!',
-            text: 'There was a problem updating the appointment status.',
-            icon: 'error',
-            confirmButtonText: 'OK'
+          title: 'Error!',
+          text: 'There was a problem confirming the appointment.',
+          icon: 'error',
+          confirmButtonText: 'OK',
         });
-        console.error("Error updating appointment status:", errors);
-        }
+        console.error('Error updating appointment status:', errors);
+      },
     });
-    }
+  }
+
+
+
 
     // Cancel appointment status
     function cancel() {
