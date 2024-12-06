@@ -149,7 +149,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 Route::get('/download-apk', function () {
-    return redirect()->away('https://www.mediafire.com/');
+    return redirect()->away('https://www.mediafire.com/file/3sbgr6d1qot5icd/Emes+Da+Dental+Clinic_1.0.0.apk/file');
 })->name('download-apk');
 
 require __DIR__.'/auth.php';
