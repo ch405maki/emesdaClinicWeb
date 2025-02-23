@@ -109,20 +109,20 @@
     // Update the appointment status
     router.put(`/appointments/${props.appointment.id}/update-status`, data, {
       onSuccess: async (page) => {
-        const successMessage = page?.props?.flash?.success || 'Appointment status updated successfully.';
+        const successMessage = page?.props?.flash?.success || 'Appointment status updated and patient notified successfully.';
 
-        // Send the confirmation email after updating the status
-        const emailData = {
-          user_name: props.appointment.patient.name, // Use dynamic patient name
-          user_email: props.appointment.patient.email, // Use dynamic patient email
-          dentist_name: props.appointment.dentist.name, // Use dynamic dentist name
-          appointment_date: props.appointment.appointment_date, // Use dynamic appointment date
+        // Prepare SMS data
+        const smsData = {
+          user_name: props.appointment.patient.name,  // Dynamic patient name
+          user_contact: props.appointment.patient.contact,  // Dynamic patient contact
+          dentist_name: props.appointment.dentist.name,  // Dynamic dentist name
+          appointment_date: props.appointment.appointment_date,  // Dynamic appointment date
         };
 
-        // Make a POST request to send the email
-        router.post(route('appointments.email'), emailData, {
+        // Send SMS notification
+        router.post(route('appointments.sms'), smsData, {
           onSuccess: () => {
-            // Display a success message for email and appointment status update
+            // Show success message
             Swal.fire({
               icon: 'success',
               title: 'Appointment Confirmed',
@@ -134,11 +134,11 @@
             });
           },
           onError: () => {
-            // Display a warning if the email failed to send
+            // Show warning if SMS fails
             Swal.fire({
               icon: 'warning',
               title: 'Appointment Confirmed',
-              text: 'The appointment was confirmed, but the confirmation email could not be sent.',
+              text: 'The appointment was confirmed, but the SMS notification could not be sent.',
               confirmButtonText: 'OK',
             });
           },
@@ -148,7 +148,7 @@
         props.appointment.status = 'confirmed';
       },
       onError: (errors) => {
-        // Handle errors when updating the appointment status
+        // Handle errors when updating appointment status
         Swal.fire({
           title: 'Error!',
           text: 'There was a problem confirming the appointment.',
@@ -159,8 +159,6 @@
       },
     });
   }
-
-
 
 
     // Cancel appointment status

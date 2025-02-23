@@ -94,6 +94,7 @@ Route::get('/appointments/my-appointments', [AppointmentController::class, 'myAp
 Route::get('/appointments/staff', [AppointmentController::class, 'staffAppointmentsManage'])->name('appointments.staff');
 
 Route::post('/send-appointment-email', [AppointmentController::class, 'sendConfirmationEmail'])->name('appointments.email');
+Route::post('/send-appointment-sms', [AppointmentController::class, 'sendConfirmationSms'])->name('appointments.sms');
 
 Route::get('/email/verify', function () {
     return view('auth.verify-email');

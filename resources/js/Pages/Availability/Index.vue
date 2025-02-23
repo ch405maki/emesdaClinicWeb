@@ -3,7 +3,7 @@
 
     <AuthenticatedLayout>
         <div class="max-w-7xl mx-auto py-4 px-4 mb-4 mx-10 sm:px-6 lg:px-8 rounded-lg bg-white shadow">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dentist Availability</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dentist Not Availabile</h2>
         </div>
         <div class="flex flex-col min-h-screen bg-gray-100">
             <main class="flex-grow">
@@ -46,7 +46,7 @@
                             <form @submit.prevent="saveAvailability" class="w-full bg-white p-5 rounded-lg shadow-md">
                                 <!-- Title -->
                                 <div class="text-left mb-4">
-                                    <h2 class="text-2xl font-bold text-gray-800">Set Your Availability</h2>
+                                    <h2 class="text-2xl font-bold text-gray-800">Dentist Not Availabile</h2>
                                 </div>
                                 
                                 <!-- Dentist Selection -->
@@ -127,14 +127,14 @@
 
   form.post(route('dentist.availability.store'), {
     onSuccess: () => {
-      Swal.fire('Success', 'Availability saved successfully!', 'success');
+      Swal.fire('Success', 'Dentist Not Availabile saved successfully!', 'success');
       form.reset();
     },
     onError: (errors) => {
       console.error(errors);
       const errorMessage = errors.response?.data?.errors 
         ? Object.values(errors.response.data.errors).flat().join(', ') 
-        : 'Failed to save availability.';
+        : 'Failed to save Dentist Not Availabile.';
         
       Swal.fire('Error', errorMessage, 'error');
     },

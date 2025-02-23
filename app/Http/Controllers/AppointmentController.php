@@ -10,13 +10,16 @@ use Illuminate\Support\Facades\Auth;
 use App\Mail\AppointmentConfirmation;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class AppointmentController extends Controller
 {
     public function index()
     {
-        $appointments = Appointment::all();
-        return inertia('Appointments/Index', ['appointments' => $appointments]);
+        $appointments = Appointment::with('patient')->get();
+        return Inertia::render('Appointments/Index', [
+            'appointments' => $appointments,
+        ]);
     }
 
     public function manage()
@@ -123,7 +126,7 @@ class AppointmentController extends Controller
             ->where('date', $date)
             ->first();
 
-        if (!$availability) {
+        if ($availability) {
             return back()->withErrors(['appointment_date' => 'The selected time is unavailable for the dentist.'])->withInput();
         }
 
@@ -141,27 +144,61 @@ class AppointmentController extends Controller
     }
 
 
-public function sendConfirmationEmail(Request $request)
-{
-    $data = $request->validate([
-        'user_name' => 'required|string',
-        'user_email' => 'required|email',
-        'appointment_date' => 'required|date',
-        'dentist_name' => 'required|string',
-    ]);
+    public function sendConfirmationEmail(Request $request)
+    {
+        $data = $request->validate([
+            'user_name' => 'required|string',
+            'user_email' => 'required|email',
+            'user_contact' => 'required',
+            'appointment_date' => 'required|date',
+            'dentist_name' => 'required|string',
+        ]);
 
-    // Parse the appointment date and set it to Philippine Time
-    $appointmentDate = Carbon::parse($data['appointment_date'])->setTimezone('Asia/Manila');
+        //dd($data);
 
-    // Format the date as "December 6, 2024 3:06 PM"
-    $data['appointment_date'] = $appointmentDate->format('F j, Y h:i A');
-    
-    // Send the email
-    Mail::to($data['user_email'])->send(new AppointmentConfirmation($data));
+        // Parse the appointment date and set it to Philippine Time
+        $appointmentDate = Carbon::parse($data['appointment_date'])->setTimezone('Asia/Manila');
 
-    return redirect()->back()->with('success', 'Appointment confirmation email sent successfully.');
-}
+        // Format the date as "December 6, 2024 3:06 PM"
+        $data['appointment_date'] = $appointmentDate->format('F j, Y h:i A');
+        
+        // Send the email
+        Mail::to($data['user_email'])->send(new AppointmentConfirmation($data));
 
+        return redirect()->back()->with('success', 'Appointment confirmation email sent successfully.');
+    }
+
+    public function sendConfirmationSms(Request $request)
+    {
+        $data = $request->validate([
+            'user_name' => 'required|string',
+            'user_contact' => 'required',
+            'appointment_date' => 'required|date',
+            'dentist_name' => 'required|string',
+        ]);
+
+        // Parse the appointment date and set it to Philippine Time
+        $appointmentDate = Carbon::parse($data['appointment_date'])->setTimezone('Asia/Manila');
+
+        // Format the date as "December 6, 2024 3:06 PM"
+        $data['appointment_date'] = $appointmentDate->format('F j, Y h:i A');
+
+        // SMS Message
+        $message = sprintf(
+            "Hi %s, your appointment is confirmed on %s. ",
+            $data['user_name'],
+            $data['appointment_date']
+        );
+
+        // Send SMS
+        $response = Http::asForm()->post('https://sms.iprogtech.com/api/v1/sms_messages', [
+            'api_token' => env('SMS_API_TOKEN'), // Store API token in .env
+            'message' => $message,
+            'phone_number' => $data['user_contact'],
+        ]);
+
+        return redirect()->back()->with('success', 'Appointment status updated and patient notified successfully.');
+    }
 
     public function updateStatus(Request $request, Appointment $appointment)
     {

@@ -5,6 +5,29 @@
     <AuthenticatedLayout>
       <div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <div class="flex items-center gap-4 mb-2">
+
+            <h1 class="flex items-center">
+              <svg class="w-6 h-6 text-[#10B981]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd"/>
+              </svg>
+              <span class="ml-2">Confirmed</span>
+            </h1>
+            
+            <h1 class="flex items-center">
+              <svg class="w-6 h-6 text-[#FBBF24]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z" clip-rule="evenodd"/>
+              </svg>
+              <span class="ml-2">Pending</span>
+            </h1>
+
+            <h1 class="flex items-center">
+              <svg class="w-6 h-6 text-[#EF4444]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm5.757-1a1 1 0 1 0 0 2h8.486a1 1 0 1 0 0-2H7.757Z" clip-rule="evenodd"/>
+              </svg>
+              <span class="ml-2">Canceled</span>
+            </h1>
+          </div>
           <!-- FullCalendar component with Tailwind CSS classes -->
           <FullCalendar 
             class="w-full"
@@ -42,33 +65,39 @@ function handleEventClick(info) {
 function getStatusColor(status) {
   switch (status.toLowerCase()) {
     case 'canceled':
-      return '#EF4444'; // Tailwind red-500
+      return '#EF4444';
     case 'completed':
-      return '#6B21A8'; // Tailwind purple-600
+      return '#6B21A8';
     case 'confirmed':
-      return '#10B981'; // Tailwind green-500
+      return '#10B981';
     case 'pending':
-      return '#FBBF24'; // Tailwind yellow-400
+      return '#FBBF24'; 
     default:
-      return '#9CA3AF'; // Tailwind gray-400 for undefined status
+      return '#9CA3AF'; 
   }
 }
 
-// Set up calendar options
 const calendarOptions = {
   initialView: 'dayGridMonth',
   plugins: [dayGridPlugin, interactionPlugin],
   events: props.appointments.map(appointment => ({
-    id: appointment.id,
-    title: appointment.status,
-    start: appointment.appointment_date,
-    backgroundColor: getStatusColor(appointment.status), // Set the background color based on status
-    borderColor: getStatusColor(appointment.status) // Matching border color
-  })),
-  eventClick: handleEventClick, // Add event click handler
+  id: appointment.id,
+  title: appointment.patient.name, // Display only the patient's name
+  start: appointment.appointment_date,
+  allDay: true, // Prevents time from being displayed
+  backgroundColor: getStatusColor(appointment.status),
+  borderColor: getStatusColor(appointment.status)
+})),
+
+
+  eventClick: handleEventClick,
+
   eventDidMount: (info) => {
-    // Change the cursor to pointer on hover
-    info.el.style.cursor = 'pointer';
+    // Enable text wrapping for long names
+    info.el.style.whiteSpace = "normal"; // Allow text to wrap
+    info.el.style.overflowWrap = "break-word"; // Ensure long words wrap
+    info.el.style.wordBreak = "break-word"; // Alternative for better support
+    info.el.style.padding = "5px"; // Add padding for better readability
   }
 };
 </script>

@@ -170,9 +170,8 @@ const calendarOptions = {
     return {
       html: `
         <div class="fc-event-content">
-          <div class="fc-event-time">${startTime}</div>
-          <div class="fc-event-title">${endTime}</div>
-          <div class="active-indicator" style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #28a745; margin-left: 5px;"></div>
+          <div class="fc-event-time">Not Available</div>
+          <div class="active-indicator" style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: #EF4444; margin-left: 5px;"></div>
         </div>
       `,
     };
