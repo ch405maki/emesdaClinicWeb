@@ -22,27 +22,21 @@
                             <table class="table-auto w-full">
                                 <thead>
                                     <tr class="bg-gray-200">
-                                        <th class="px-4 py-2 text-left">Date</th>
-                                        <th class="px-4 py-2 text-left" v-if="!isSmScreen">Diagnosis</th>
                                         <th class="px-4 py-2 text-left" v-if="!isSmScreen">Patient</th>
                                         <th class="px-4 py-2">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-gray-700">
                                     <tr v-for="appointment in filteredAppointments" :key="appointment.id" class="border-b border-gray-200 hover:bg-gray-100">
-                                        <td class="px-4 py-2">{{ formatDate(appointment.appointment_date) }}</td>
-
                                         <template v-if="!isSmScreen">
-                                            <td class="px-4 py-2">{{ appointment.diagnostic?.description || 'No description available' }}</td>
                                             <td class="px-4 py-2">{{ appointment.patient?.name || 'No patient' }}</td>
                                         </template>
 
                                         <td class="px-4 py-2 text-center">
                                             <button
-                                                @click="handleAction(appointment.id)"
-                                                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-                                            >
-                                                Show
+                                                @click="handleAction(appointment.patient.id)"
+                                                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                                                <i class="fa-solid fa-folder"></i> Show History
                                             </button>
                                         </td>
                                     </tr>
@@ -97,9 +91,9 @@ const filteredAppointments = computed(() => {
     });
 });
 
-// Navigate to report details
+// Navigate to report history
 const handleAction = (appointmentId) => {
-    router.get(route('reports.show', appointmentId));
+    router.get(route('reports.history', { id: appointmentId }));
 };
 
 // Date formatter

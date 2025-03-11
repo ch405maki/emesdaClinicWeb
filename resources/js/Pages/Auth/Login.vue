@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
@@ -9,12 +10,8 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 
 defineProps({
-    canResetPassword: {
-        type: Boolean,
-    },
-    status: {
-        type: String,
-    },
+    canResetPassword: Boolean,
+    status: String,
 });
 
 const form = useForm({
@@ -22,6 +19,12 @@ const form = useForm({
     password: '',
     remember: false,
 });
+
+// Password visibility toggle
+const showPassword = ref(false);
+const togglePassword = () => {
+    showPassword.value = !showPassword.value;
+};
 
 const submit = () => {
     form.post(route('login'), {
@@ -37,7 +40,7 @@ const submit = () => {
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
         </div>
-        
+
         <!-- Centering the logo -->
         <div class="flex justify-center mb-8">
             <Link href="/"> 
@@ -52,7 +55,7 @@ const submit = () => {
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full"
+                    class="mt-1 block w-full border border-gray-300"
                     v-model="form.email"
                     required
                     autofocus
@@ -62,26 +65,43 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+            <!-- Password Input with Eye Icon -->
+            <div class="space-y-2">
+            <div>
+                <label for="password" class="text-gray-600 mb-2 block">Password</label>
 
-                <TextInput
+                <div class="relative">
+                    <!-- Password Input -->
+                    <input
+                    :type="showPassword ? 'text' : 'password'"
+                    name="password"
                     id="password"
-                    type="password"
-                    class="mt-1 block w-full"
+                    class="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-teal-500 placeholder-gray-400 pr-12"
                     v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                />
+                    placeholder="***********"
+                    />
 
-                <InputError class="mt-2" :message="form.errors.password" />
+                    <!-- Eye Icon Button -->
+                    <button
+                    type="button"
+                    class="cursor-pointer absolute inset-y-0 right-0 flex items-center px-4 text-gray-600 border-l border-gray-300"
+                    @click="togglePassword"
+                    >
+                    <i :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'" class="text-lg"></i>
+                    </button>
+                </div>
+            </div>
             </div>
 
+
             <div class="block mt-4">
-                <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ms-2 text-sm text-gray-600">Remember me</span>
-                </label>
+                <Link
+                    v-if="canResetPassword"
+                    :href="route('password.request')"
+                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                    Forgot your password?
+                </Link>
             </div>
 
             <div class="flex items-center justify-end mt-4">
@@ -90,7 +110,7 @@ const submit = () => {
                     :href="route('register')"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    Dont Have An Account?<span class="text-purple-700 font-bold"> Click Here!</span>
+                    Don't Have An Account?<span class="text-purple-700 font-bold"> Click Here!</span>
                 </Link>
 
                 <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">

@@ -11,35 +11,76 @@ use PDF;
 class ReportController extends Controller
 {
     public function index()
-    {
-        // Get the currently authenticated user
-        $user = Auth::user();
-        // Initialize the appointments query
-        $query = Appointment::query();
+{
+    // Get the currently authenticated user
+    $user = Auth::user();
 
-        // Check the user's role and adjust the query accordingly
-        if ($user->role == 'dentist') {
-            // Fetch all appointments for dentists
-            $appointments = Appointment::has('diagnostic')->with(['patient', 'dentist', 'diagnostic'])->get();
-        }
-        elseif ($user->role == 'staff') {
-            // Fetch all appointments for dentists
-            $appointments = Appointment::has('diagnostic')->with(['patient', 'dentist', 'diagnostic'])->get();
-        } 
-        elseif ($user->role == 'patient') {
-            // Fetch only appointments made by the patient
-            $appointments = $query->where('patient_id', $user->id)
-                                ->has('diagnostic')
-                                ->with(['patient', 'dentist', 'diagnostic'])
-                                ->get();
-        }
+    if ($user->role == 'dentist' || $user->role == 'staff') {
+        // Fetch unique patients who have appointments with diagnostics
+        $appointments = Appointment::has('diagnostic')
+            ->with(['patient', 'dentist', 'diagnostic'])
+            ->get()
+            ->unique('patient_id'); // Ensure unique patient records
 
-        // Return the view with the fetched data
         return Inertia::render('Reports/Index', [
             'appointments' => $appointments,
-            'role' => $user->role, // Pass the role to the front end
+            'role' => $user->role,
+        ]);
+    } 
+    
+    elseif ($user->role === 'patient') {
+        // Fetch all appointments related to the authenticated patient
+        $appointments = Appointment::with(['patient', 'dentist', 'diagnostic'])
+            ->where('patient_id', $user->id)
+            ->get();
+
+        // Fetch the latest diagnostic for the patient (if any)
+        $latestDiagnostic = Diagnostic::whereIn('appointment_id', $appointments->pluck('id'))
+            ->latest()
+            ->first();
+
+        return Inertia::render('Reports/History', [
+            'appointments' => $appointments,
+            'diagnostic' => $latestDiagnostic,
+            'userRole' => $user->role
         ]);
     }
+
+    // Default return (optional: prevent unintended behavior)
+    return Inertia::render('Reports/Index', [
+        'appointments' => [],
+        'role' => $user->role,
+    ]);
+}
+
+
+    public function history($patientId)
+    {
+        // Fetch all appointments related to the given patient ID
+        $appointments = Appointment::with(['patient', 'dentist', 'diagnostic'])
+            ->where('patient_id', $patientId)
+            ->get();
+
+        if ($appointments->isEmpty()) {
+            abort(404, 'No appointments found for this patient');
+        }
+
+        // Fetch the latest diagnostic for the patient (if any)
+        $latestDiagnostic = Diagnostic::whereIn('appointment_id', $appointments->pluck('id'))
+            ->latest()
+            ->first();
+
+        // Get the authenticated user's role
+        $userRole = auth()->user()->role;
+
+        // Return Inertia response with all appointments, latest diagnostic, and user role
+        return Inertia::render('Reports/History', [
+            'appointments' => $appointments,
+            'diagnostic' => $latestDiagnostic,
+            'userRole' => $userRole
+        ]);
+    }
+
 
     public function show($id)
     {

@@ -60,7 +60,7 @@ Route::get('/test-email', function () {
     ];
 
     Mail::raw($details['body'], function ($message) use ($details) {
-        $message->from('em@emesdadentalclinic.com', 'Emesda Dental Clinic')
+        $message->from('admin@emesdadentalclinic.com', 'Emesda Dental Clinic')
                 ->to('markmanuel0317@gmail.com')
                 ->subject($details['subject']);
     });
@@ -133,6 +133,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Reports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/{id}', [ReportController::class, 'show'])->name('reports.show');
+    Route::get('/reports/history/{id}', [ReportController::class, 'history'])->name('reports.history');
     Route::get('/reports/{id}/export-pdf', [ReportController::class, 'exportPdf'])->name('reports.export-pdf');
 
     //Staff management
