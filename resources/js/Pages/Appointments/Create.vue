@@ -201,7 +201,7 @@ const handleSubmit = async () => {
 
     const formData = {
       ...form.value,
-      appointment_date: formattedDate,  // Send the converted date to the backend
+      appointment_date: formattedDate, 
     };
 
     // Create the appointment
