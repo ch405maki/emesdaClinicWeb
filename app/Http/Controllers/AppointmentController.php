@@ -113,13 +113,19 @@ class AppointmentController extends Controller
             'status' => 'required|in:pending,confirmed,completed,canceled',
         ]);
 
-        // Optional: Check the validated data for debugging before further processing
-        //dd($validated); // Uncomment if needed to inspect validated data
-
         // Parse the date and time from appointment_date
         $appointmentDate = \Carbon\Carbon::parse($validated['appointment_date']);
         $date = $appointmentDate->format('Y-m-d'); // Extract just the date
         $time = $appointmentDate->format('H:i:s'); // Extract just the time
+
+        // Check if the patient already has an appointment on the same day
+        $existingAppointment = Appointment::where('patient_id', $validated['patient_id'])
+            ->whereDate('appointment_date', $date)
+            ->first();
+
+        if ($existingAppointment) {
+            return back()->withErrors(['appointment_date' => 'You can only make one appointment per day.'])->withInput();
+        }
 
         // Check dentist availability
         $availability = DentistAvailability::where('dentist_id', $validated['dentist_id'])
@@ -127,17 +133,23 @@ class AppointmentController extends Controller
             ->first();
 
         if ($availability) {
-            return back()->withErrors(['appointment_date' => 'The selected time is unavailable for the dentist.'])->withInput();
+            return back()->withErrors(['appointment_date' => 'The selected date is unavailable for the dentist.'])->withInput();
+        }
+
+        // Check for conflicting appointments
+        $conflictingAppointment = Appointment::where('dentist_id', $validated['dentist_id'])
+            ->where('appointment_date', $appointmentDate)
+            ->first();
+
+        if ($conflictingAppointment) {
+            return back()->withErrors(['appointment_date' => 'The selected time is already booked.'])->withInput();
         }
 
         // Create a new appointment with the validated data
-        
         $appointment = Appointment::create($validated);
 
-        // dd($appointment);
-
         if ($appointment) {
-            return redirect()->back()->with('success', 'Appointment status updated successfully.');
+            return redirect()->back()->with('success', 'Appointment created successfully.');
         } else {
             return back()->withErrors(['appointment_date' => 'Failed to save appointment, please try again.'])->withInput();
         }
@@ -177,10 +189,8 @@ class AppointmentController extends Controller
             'dentist_name' => 'required|string',
         ]);
 
-        // Parse the appointment date and set it to Philippine Time
         $appointmentDate = Carbon::parse($data['appointment_date'])->setTimezone('Asia/Manila');
 
-        // Format the date as "December 6, 2024 3:06 PM"
         $data['appointment_date'] = $appointmentDate->format('F j, Y h:i A');
 
         // SMS Message
@@ -194,7 +204,7 @@ class AppointmentController extends Controller
         $response = Http::asForm()->post('https://sms.iprogtech.com/api/v1/sms_messages', [
             'api_token' => env('SMS_API_TOKEN'), // Store API token in .env
             'message' => $message,
-            'phone_number' => $data['user_contact'],
+            'phone_number' => $data['user_contact'],'sms_provider' => 1,
         ]);
 
         return redirect()->back()->with('success', 'Appointment status updated and patient notified successfully.');
