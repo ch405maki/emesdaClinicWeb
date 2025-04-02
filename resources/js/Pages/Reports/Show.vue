@@ -20,7 +20,6 @@
         
         <!-- Diagnostic Information Card -->
         
-
         <!-- PDF template content -->
           <div id="pdf-template">
               <div class="pdf-header flex items-center justify-center">
@@ -36,61 +35,61 @@
               <div class="overflow-hidden">
               <!-- Patient Information Section -->
               <div class="px-4 py-2">
-                <h3 class="text-sm font-medium text-gray-900">Patient Information</h3>
+                <h3 class="text-xs font-medium text-gray-900">Patient Information</h3>
               </div>
               <div class="border-t border-gray-200 px-4 py-4">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div>
-                    <p class="text-sm font-medium text-gray-600">
+                    <p class="text-xs font-medium text-gray-600">
                       Name: <span class="text-gray-800">{{ appointment.patient.name }}</span>
                     </p>
                   </div>
                   <div class="col-span-2">
-                    <p class="text-sm font-medium text-gray-600">
+                    <p class="text-xs font-medium text-gray-600">
                       Address: <span class="text-gray-800">{{ appointment.patient.address }}</span>
                     </p>
                   </div>
                   <div>
-                    <p class="text-sm font-medium text-gray-600">
+                    <p class="text-xs font-medium text-gray-600">
                       Phone: <span class="text-gray-800">{{ appointment.patient.contact }}</span>
                     </p>
                   </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div>
-                    <p class="text-sm font-medium text-gray-600">
+                    <p class="text-xs font-medium text-gray-600">
                       Age: <span class="text-gray-800">{{ appointment.patient.age }}</span>
                     </p>
                   </div>
                   <div>
-                    <p class="text-sm font-medium text-gray-600">
+                    <p class="text-xs font-medium text-gray-600">
                       Sex: <span class="text-gray-800">{{ appointment.patient.sex }}</span>
                     </p>
                   </div>
                   <div>
-                    <p class="text-sm font-medium text-gray-600">
+                    <p class="text-xs font-medium text-gray-600">
                       Status: <span class="text-gray-800">{{ appointment.patient.civil_status }}</span>
                     </p>
                   </div>
                   <div>
-                    <p class="text-sm font-medium text-gray-600">
+                    <p class="text-xs font-medium text-gray-600">
                       Occupation: <span class="text-gray-800">{{ appointment.patient.occupation }}</span>
                     </p>
                   </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div>
-                    <p class="text-sm font-medium text-gray-600">
+                    <p class="text-xs font-medium text-gray-600">
                       Office Address: <span class="text-gray-800">{{ appointment.patient.officeAddress }}</span>
                     </p>
                   </div>
                   <div>
-                    <p class="text-sm font-medium text-gray-600">
+                    <p class="text-xs font-medium text-gray-600">
                       Telephone: <span class="text-gray-800">{{ appointment.patient.telNumber }}</span>
                     </p>
                   </div>
                   <div>
-                    <p class="text-sm font-medium text-gray-600">
+                    <p class="text-xs font-medium text-gray-600">
                       Date: <span class="text-gray-800">{{ formattedCreatedAt }}</span>
                     </p>
                   </div>
@@ -100,46 +99,46 @@
               <div class="border-t border-gray-200 px-4 py-2">
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div>
-                  <p class="text-sm font-medium text-gray-600">
+                  <p class="text-xs font-medium text-gray-600">
                     Occlusion: <span class="text-gray-800">{{ diagnostic.occlusion }}</span>
                   </p>
-                  <p class="text-sm font-medium text-gray-600">
+                  <p class="text-xs font-medium text-gray-600">
                     Periodontal Condition: <span class="text-gray-800">{{ diagnostic.condition }}</span>
                   </p>
-                  <p class="text-sm font-medium text-gray-600">
+                  <p class="text-xs font-medium text-gray-600">
                     Oral Hygiene: <span class="text-gray-800">{{ diagnostic.hygiene }}</span>
                   </p>
-                  <p class="text-sm font-medium text-gray-600">
+                  <p class="text-xs font-medium text-gray-600">
                     Denture Upper: <span class="text-gray-800">{{ diagnostic.denture_upper }}</span>
                   </p>
-                  <p class="text-sm font-medium text-gray-600">
+                  <p class="text-xs font-medium text-gray-600">
                     Denture Lower: <span class="text-gray-800">{{ diagnostic.denture_lower }}</span>
                   </p>
-                  <p class="text-sm font-medium text-gray-600">
+                  <p class="text-xs font-medium text-gray-600">
                     Abnormalities: <span class="text-gray-800">{{ diagnostic.abnormalities }}</span>
                   </p>
-                  <p class="text-sm font-medium text-gray-600">
+                  <p class="text-xs font-medium text-gray-600">
                     General Condition: <span class="text-gray-800">{{ diagnostic.general_condition }}</span>
                   </p>
-                  <p class="text-sm font-medium text-gray-600">
+                  <p class="text-xs font-medium text-gray-600">
                     Physician: <span class="text-gray-800">{{ diagnostic.physician }}</span>
                   </p>
-                  <p class="text-sm font-medium text-gray-600">
+                  <p class="text-xs font-medium text-gray-600">
                     Nature of Treatment: <span class="text-gray-800">{{ diagnostic.nature_treatment }}</span>
                   </p>
-                  <p class="text-sm font-medium text-gray-600">
+                  <p class="text-xs font-medium text-gray-600">
                     Allergies: <span class="text-gray-800">{{ diagnostic.alergies }}</span>
                   </p>
-                  <p class="text-sm font-medium text-gray-600">
+                  <p class="text-xs font-medium text-gray-600">
                     Previous History of Bleeding: <span class="text-gray-800">{{ diagnostic.history }}</span>
                   </p>
-                  <p class="text-sm font-medium text-gray-600">
+                  <p class="text-xs font-medium text-gray-600">
                     Chronic Ailments: <span class="text-gray-800">{{ diagnostic.ailments }}</span>
                   </p>
-                  <p class="text-sm font-medium text-gray-600">
+                  <p class="text-xs font-medium text-gray-600">
                     Blood Pressure: <span class="text-gray-800">{{ diagnostic.bp }}</span>
                   </p>
-                  <p class="text-sm font-medium text-gray-600">
+                  <p class="text-xs font-medium text-gray-600">
                     Drugs Being Taken: <span class="text-gray-800">{{ diagnostic.drugs }}</span>
                   </p>
                 </div>
@@ -209,18 +208,22 @@
                 <div class="border-t border-gray-200 px-4 py-2 mt-8">
                   <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="sm:col-span-1">
-                      <dt class="text-sm font-medium text-gray-600">Description</dt>
-                      <dd class="text-sm text-gray-800">{{ diagnostic.description }}</dd>
+                      <dt class="text-xs font-medium text-gray-600">Description</dt>
+                      <dd class="text-xs text-gray-800">{{ diagnostic.description }}</dd>
                     </div>
                     <div class="sm:col-span-1">
-                      <dt class="text-sm font-medium text-gray-600">Service Rendered</dt>
-                      <dd class="text-sm text-gray-800">{{ diagnostic.service_rendered }}</dd>
+                      <dt class="text-xs font-medium text-gray-600">Service Rendered</dt>
+                      <dd class="text-xs text-gray-800">{{ diagnostic.service_rendered }}</dd>
                     </div>
                     <div class="sm:col-span-1">
-                      <dt class="text-sm font-medium text-gray-600">Remarks</dt>
-                      <dd class="text-sm text-gray-800">{{ diagnostic.remarks }}</dd>
+                      <dt class="text-xs font-medium text-gray-600">Remarks</dt>
+                      <dd class="text-xs text-gray-800">{{ diagnostic.remarks }}</dd>
                     </div>
                 </div>
+                </div>
+                <div class="mt-4 text-right">
+                  <h1>___________________________________</h1>
+                  <p class="mr-15 text-xs">(Signiture of Dentist)</p>
                 </div>
               </div>
               </div>
